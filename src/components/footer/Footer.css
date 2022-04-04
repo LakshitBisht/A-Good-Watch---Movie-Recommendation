@@ -1,0 +1,18 @@
+.footer {
+    text-align: center;
+  margin: 0;
+    background-color: #232931;
+    padding: 50px 0 20px;
+    margin-top: 20px;
+  }
+
+  a {
+    color: #4ECCA3;
+    font-family: 'Montserrat', sans-serif;
+    margin: 10px 20px;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: white;
+  }

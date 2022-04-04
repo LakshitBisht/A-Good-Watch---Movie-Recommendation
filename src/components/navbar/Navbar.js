@@ -1,28 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { ArrowDropDown, Notifications } from '@material-ui/icons';
+import React, { useEffect, useRef, useState } from 'react';
+import { ArrowDropDown} from '@material-ui/icons';
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 import './Navbar.css';
-import {NavLink} from 'react-router-dom';
+import {NavLink, useNavigate, useLocation} from 'react-router-dom';
 import {useSelector} from 'react-redux';  
 import {selectUser} from '../../features/userSlice';
-import {auth, analytics} from '../../firebase';
-import { logEvent } from "firebase/analytics";
+import {auth} from '../../firebase/firebase';
 import {signOut} from "firebase/auth";
-import {useNavigate} from 'react-router-dom';
 import {toast} from 'react-toastify';
+import LogoImg from '../../assests/images/logo.png';
 
-function Navbar() {
+
+function Navbar({searchNavigate=true, searchQueryUrl='', setSearchQueryUrl=undefined}) {
 
     const navigate = useNavigate();
+    const location = useLocation();
     const user = useSelector(selectUser);
     const [navClass,setNavClass] = useState('nav');
     const [avatarImg, setAvatarImg] = useState('');
+    const [searchActive, setSearchActive] = useState(location?.state?.searchActive || !searchNavigate);
+    const [searchQuery, setSearchQuery] = useState(searchQueryUrl);
+
+    const searchQueryRef = useRef();
 
     useEffect(()=>{
         if(user){
             setAvatarImg(user.photoURL);
         }
+        return ()=>{
+            setAvatarImg('');
+        }
     },[user]);
+
+    useEffect(()=>{
+        if(searchNavigate && searchQuery !== ''){
+            navigate(`/search?q=${searchQuery}`);
+        }
+        else{
+        if(!searchNavigate && searchQuery === ''){
+            navigate('/browse', {state: {searchActive: true}});
+        }
+    }
+    },[navigate, searchNavigate, searchQuery]);
+
+
+    useEffect(()=>{
+        searchActive && searchQueryRef.current.focus();
+    },[searchActive]);
+
 
     const navTransition = () => {
         if(window.scrollY > 50){
@@ -47,7 +72,6 @@ function Navbar() {
         setTimeout(()=>{
         toast.promise(
             signOut(auth).then(()=>{
-                logEvent(analytics, 'logged_out');
                 toast.dismiss(toastId);
                 navigate("/login");
             }),
@@ -59,52 +83,51 @@ function Navbar() {
             },2000);
     };
 
+    const handleProfile = (e) => {
+        e.preventDefault();
+        navigate("/profile");
+    };
+
+    const handleSearchQueryChange = (e) => {
+        e.preventDefault();
+        setSearchQuery(e.target.value);
+        if(e.target.value !== ''){
+        setSearchQueryUrl && setSearchQueryUrl({q:e.target.value}, { replace: true });
+        }
+    }
 
   return (
     <div className={`${navClass}`}>
+        {avatarImg !== "" &&
         <div className='nav-items'>
 
             <div className="nav-left">
-                <img className='logo' src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png" alt="logo.png" />
-                <NavLink to="/browse" className={
-                    ({ isActive }) =>
-                        isActive ? "active" : undefined
-                }>
-                    <span>Home</span>
-                </NavLink>
-                <NavLink to="/movies" className={
-                    ({ isActive }) =>
-                        isActive ? "active" : undefined
-                }>
-                    <span className="navbarmainLinks">Movies</span>
-                </NavLink>
-                <NavLink to="/series" className={
-                    ({ isActive }) =>
-                        isActive ? "active" : undefined
-                }>
-                    <span className="navbarmainLinks">Series</span>
-                </NavLink>
-                <NavLink to="/mylist" className={
-                    ({ isActive }) =>
-                        isActive ? "active" : undefined
-                }>
-                <span>My List</span>
-                </NavLink>
+                <img className='logo' src={LogoImg} alt="logo.png" />
+                <NavLink to="/browse">Home</NavLink>
+                <NavLink to="/movies" >Movies</NavLink>
+                <NavLink to="/series" >Series</NavLink>
+                <NavLink to="/mylist" >My List</NavLink>
             </div>
 
             <div className="nav-right">
-                <SearchRoundedIcon className="nav-icon" />
-                <Notifications className="nav-icon" />
-                <img className='avatar' src={avatarImg} alt="avatar.png" />
+
+
+            <div className={`app__search mobile ${(searchActive) ? "open" : ""}`} onClick={()=>setSearchActive(true)}>
+					<SearchRoundedIcon style={{ fontSize: 20 }} className="app__searchIcon" onClick={()=>setSearchActive(true)} />
+					<input type="search" ref={searchQueryRef} value={searchQuery} onBlur={() => setSearchActive(false)} onChange={handleSearchQueryChange} placeholder="Search..." />
+			</div>
+
                 <div className="nav-profile">
+                <img className='avatar' src={avatarImg} alt="avatar.png" />
                     <ArrowDropDown className="nav-icon" />
                     <div className="options">
-                        <span>Settings</span>
+                        <span onClick={handleProfile}>Profile</span>
                         <span onClick={handleLogout}>Logout</span>
                     </div>
                 </div>
             </div>  
         </div>
+    }
     </div>
   )
 }

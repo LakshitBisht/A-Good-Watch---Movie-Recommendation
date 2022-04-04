@@ -1,36 +1,98 @@
-import React from 'react'
-import './Row.css'
-import axios from '../../axios'
-import { useState, useEffect } from 'react';
+import React from "react";
+import "./Row.css";
+import StarRoundedIcon from "@material-ui/icons/StarRounded";
+import Rating from "@material-ui/lab/Rating";
+import TextTruncate from "react-text-truncate";
+import numeral from "numeral";
 
-export default function Row(props) {
-
-  const [movieDetails, setMovieDetails] = useState([]);
-  
-  useEffect(() => {
-    async function fetchData() {
-      const request = await axios.get(props.fetchURL);
-      setMovieDetails(request.data.results);
-      return request;
+export default function Row({
+  title,
+  mediaDetails,
+  setBannerMedia,
+  setLoading,
+  mediaType,
+}) {
+  const handleClick = (movie) => {
+    if (!movie.media_type) {
+      movie.media_type = mediaType;
     }
-    fetchData();
-    return setMovieDetails;
-  }, [props.fetchURL, setMovieDetails]);
+    if(!movie.bannerTitle){
+    if (movie.media_type === "movie") {
+      movie.bannerTitle = "Selected Movie";
+    } else {
+      movie.bannerTitle = "Selected TV Show";
+    }}
+    setBannerMedia(movie);
+    setLoading(true);
+  };
 
+  const getReleaseYear = (date) => {
+    let year = new Date(date);
+    return year.getFullYear();
+  };
 
   return (
-    <div className='row'>
-        <h2>{props.title}</h2>
-        <div className='row-movies'>
-          {movieDetails.map(movie => (
-            (movie.poster_path && movie.backdrop_path) &&
-            <img className= {`row-movie-image-${props.rowSize}`} 
-              key={movie.id}
-              src={`https://image.tmdb.org/t/p/original/${props.rowSize==="large"? movie.poster_path : movie.backdrop_path}`}
-              alt={movie.name}
-            />
-          ))}
+    <div className={"list biglist"}>
+      <div className="list__trending list__big">
+        <h4>{title}</h4>
+        <div className="list__items list__items-big">
+          {mediaDetails?.map(
+            (movie) =>
+              movie.poster_path &&
+              movie.backdrop_path && (
+                <div
+                  className="list__item"
+                  key={movie.id}
+                  onClick={() => handleClick(movie)}
+                >
+                  <img
+                    className={`row-movie-image-small`}
+                    loading="lazy"
+                    key={movie.id}
+                    src={`https://image.tmdb.org/t/p/original/${
+                      movie.backdrop_path || movie.poster_path
+                    }`}
+                    alt={movie.name}
+                  />
+                  <div className="list__itemInfo">
+                    <h5 className="list__itemTitle">
+                      {movie.title ||
+                        movie.original_title ||
+                        movie.name ||
+                        movie.original_name}
+                      <span className="list__itemYear">
+                        (
+                        {getReleaseYear(
+                          movie.release_date || movie.first_air_date
+                        )}
+                        )
+                      </span>
+                    </h5>
+                    <TextTruncate
+                      line={2}
+                      element="p"
+                      containerClassName="list__itemOverview"
+                      truncateText="…"
+                      text={movie.tagline || movie.overview}
+                    />
+                    <div className="list__rating">
+                      <Rating
+                        name="movie-rating"
+                        className="movieRating"
+                        value={movie.vote_average / 2 || 0}
+                        precision={0.5}
+                        icon={<StarRoundedIcon fontSize="inherit" readOnly />}
+                      />
+                      <small className="list__likes">
+                        {numeral(movie.vote_average / 2).format("0.0")}
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              )
+          )}
         </div>
+      </div>
     </div>
-  )
+  );
 }

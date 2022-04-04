@@ -1,70 +1,208 @@
-import React, { useEffect, useState } from 'react';
-import './Banner.css';
-import axios from '../../axios';
-import requests from '../../requests';
-import { InfoOutlined, PlayArrow } from "@material-ui/icons";
+import { useState, useEffect } from "react";
+import "./Banner.css";
+import TextTruncate from "react-text-truncate";
+import Rating from "@material-ui/lab/Rating";
+import StarRoundedIcon from "@material-ui/icons/StarRounded";
+import PlayArrowRoundedIcon from "@material-ui/icons/PlayArrowRounded";
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+import Button from "@material-ui/core/Button";
+import numeral from "numeral";
+import axios from "../../api/axios";
+import ModalVideo from "react-modal-video";
+import Grow from "@material-ui/core/Grow";
+import {toast} from 'react-toastify';
 
-export default function Banner({type}) {
+import {useDispatch, useSelector} from 'react-redux';
+import {addToList, removeFromList, selectMyList} from '../../features/mylistSlice';
 
-  const[bannerMovie, setBannerMovie] = useState([]);
+
+export default function Banner({ title, fetchURL }) {
+  const [bannerMovie, setBannerMovie] = useState([]);
+  const [movieCertification, setMovieCertification] = useState("NA");
+  const [playTrailer, setPlayTrailer] = useState(false);
+  const [videoId, setVideoId] = useState("");
+  const [truncLine, setTruncLine] = useState(2);
+
+  const myList = useSelector(selectMyList);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchData() {
-      const request = await axios.get(requests.fetchNetflixOriginals);
-      const data = request.data.results[Math.floor(Math.random() * request.data.results.length-1)];
-      setBannerMovie(data);
-      return request;
+      const response = await axios.get(fetchURL);
+      response.data.bannerTitle = title;
+      
+      for (let i = 0; i < response.data.videos.results.length; i++) {
+        if (response.data.videos.results[i].type === "Trailer") {
+          setVideoId(response.data.videos.results[i].key);
+          break;
+        }
+      }
+      
+      if (title === "Featured Movie" || title === "Selected Movie") {
+        response.data.media_type = "movie";
+        setBannerMovie(response.data);
+        let releaseDates = response.data.release_dates.results;
+        for (let i = 0; i < releaseDates.length; i++) {
+          if (
+            releaseDates[i].iso_3166_1 === "US" ||
+            releaseDates[i].iso_3166_1 === "IN"
+            ) {
+              releaseDates[i].release_dates[0].certification &&
+              setMovieCertification(
+                releaseDates[i].release_dates[0].certification
+                );
+                break;
+              }
+            }
+          } else {
+            response.data.media_type = "tv";
+        setBannerMovie(response.data);
+        let contentRating = response.data.content_ratings.results;
+        for (let i = 0; i < contentRating.length; i++) {
+          if (contentRating[i].iso_3166_1 === "US") {
+            contentRating[i].rating &&
+              setMovieCertification(contentRating[i].rating);
+            break;
+          }
+        }
+      }
+      return response;
     }
-    fetchData();
-    return setBannerMovie;
-  },[setBannerMovie]);
+    window.scrollTo(0, 0);
+    fetchURL && fetchData();
+    
+    return () => {
+      setBannerMovie([]);
+      setMovieCertification("NA");
+      setVideoId("");
+    };
+  }, [fetchURL, setBannerMovie, setMovieCertification, title]);
 
-  function truncate(string,n){
-    return string?.length > n ? string.substring(0,n-1) + '...' : string;
+  const readMore = (e) => {
+    e.preventDefault();
+    setTruncLine(0);
+    e.target.style.display = "none";
+  };
+
+  const getReleaseYear = (date) => {
+    let year = new Date(date);
+    return year.getFullYear();
+  };
+
+  const addToWatchList = async (e) => {
+    e.preventDefault();
+    dispatch(addToList(bannerMovie));
+    toast.success("Added to My List!");
+  }
+
+  const removeFromWatchList = async (e) => {
+    e.preventDefault();
+    dispatch(removeFromList({id:bannerMovie.id, media_type:bannerMovie.media_type}));
+    toast.success("Removed from My List!");
   }
 
   return (
-    <header className='banner' style={{backgroundImage: `url("https://image.tmdb.org/t/p/original/${bannerMovie?.backdrop_path}")`}}>
-      <div className='banner-items'>
-        {type && (
-            <div className="category">
-              <span>{type === "movie" ? "Movies" : "Series"}</span>
-              <select name="genre" id="genre">
-                <option>Genre</option>
-                <option value="adventure">Adventure</option>
-                <option value="comedy">Comedy</option>
-                <option value="crime">Crime</option>
-                <option value="fantasy">Fantasy</option>
-                <option value="historical">Historical</option>
-                <option value="horror">Horror</option>
-                <option value="romance">Romance</option>
-                <option value="sci-fi">Sci-fi</option>
-                <option value="thriller">Thriller</option>
-                <option value="western">Western</option>
-                <option value="animation">Animation</option>
-                <option value="drama">Drama</option>
-                <option value="documentary">Documentary</option>
-              </select>
-            </div>
-          )}
+    <>
+      {bannerMovie.backdrop_path && (
+        <header
+          className="banner"
+          style={{
+            backgroundImage: `url("https://image.tmdb.org/t/p/original/${bannerMovie?.backdrop_path}")`,
+          }}
+        >
+          <div className="banner-items">
+            {videoId!=="" && (
+              <Grow in={playTrailer} mountOnEnter unmountOnExit>
+                <ModalVideo
+                  channel="youtube"
+                  isOpen="true"
+                  videoId={videoId}
+                  onClose={() => setPlayTrailer(false)}
+                />
+              </Grow>
+            )}
 
-      {/* <img src={bannerMovie.imgTitle} alt="title-img" /> */}
-        <h1 className='banner-title'>{bannerMovie?.title || bannerMovie?.name || bannerMovie?.original_name}</h1>
-        <div className='banner-buttons'>
-          <button className='banner-button-play'>
-            <PlayArrow />
-            <span>Play</span>
-          </button>
-          <button className='banner-button-info'>
-            <InfoOutlined />
-            <span>Info</span>
-          </button>
-        </div>
-        <h1 className='banner-description'>
-          {truncate(bannerMovie?.overview,150)}
-        </h1>
-      </div>
-      <div className='banner-bottomFade' />
-    </header>
-  )
+            <p className="app__featuredInfo">{title}</p>
+            <h2 className="app__featuredTitle">
+              {bannerMovie.title ||
+                bannerMovie.original_title ||
+                bannerMovie.name ||
+                bannerMovie.original_name}
+              <span className="app__featuredYear">
+                (
+                {getReleaseYear(
+                  bannerMovie.release_date || bannerMovie.first_air_date
+                )}
+                )
+              </span>
+            </h2>
+            <p className="app__featuredGenres">
+              <span className="app__featuredCert">{movieCertification}</span>
+              {bannerMovie?.genres?.slice(0, 3).map((genre) => (
+                <span className="app__featuredGenre" key={genre.id}>
+                  {genre.name}
+                </span>
+              ))}
+            </p>
+            <TextTruncate
+              line={truncLine}
+              element="p"
+              containerClassName="app__featuredDesc"
+              textTruncateChild={<small onClick={readMore}>[more]</small>}
+              truncateText="…"
+              text={bannerMovie.overview}
+            />
+            {bannerMovie.number_of_seasons && (
+              <p className="app__seriesSeasons">
+                {bannerMovie.number_of_seasons} Seasons,{" "}
+                {bannerMovie.number_of_episodes} Episodes
+              </p>
+            )}
+            <div className="app__featuredRating">
+              <Rating
+                name="movie-rating"
+                value={bannerMovie.vote_average / 2}
+                precision={0.5}
+                icon={<StarRoundedIcon fontSize="inherit" readOnly />}
+              />
+              <p className="app__featuredLikes">
+                {numeral(bannerMovie.vote_average / 2).format("0.0")}
+                <small>
+                  ({numeral(bannerMovie.vote_count).format("0,0")})
+                </small>
+              </p>
+            </div>
+            <Button
+              className="app__button"
+              variant="contained"
+              onClick={() => setPlayTrailer(true)}
+              startIcon={<PlayArrowRoundedIcon />}
+              disabled={videoId === ""}
+            >
+              Play Trailer
+            </Button>
+            { myList.some(media => media.id === bannerMovie.id && media.media_type === bannerMovie.media_type) ? 
+            <Button
+            className="app__button"
+            variant="contained"
+            onClick={removeFromWatchList}
+            startIcon={<RemoveIcon />}>
+            Remove From List
+          </Button>
+            :
+            <Button
+              className="app__button"
+              variant="contained"
+              onClick={addToWatchList}
+              startIcon={<AddIcon />}>
+              Add To List
+            </Button>
+    } 
+          </div>
+          <div className="banner-bottomFade" />
+        </header>
+      )}
+    </>
+  );
 }

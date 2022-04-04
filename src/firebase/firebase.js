@@ -1,7 +1,5 @@
 import firebase from 'firebase/compat/app';
-import { getFirestore}  from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCGoILgNSoPnDQsF9fRJVWcaP2FjlL9vYI",
@@ -13,9 +11,7 @@ const firebaseConfig = {
   };
 
 const firebaseAdmin = firebase.initializeApp(firebaseConfig);
-const db = getFirestore(firebaseAdmin);
 const auth = getAuth(firebaseAdmin);
-const analytics = getAnalytics(firebaseAdmin);
 const provider = new GoogleAuthProvider();
 
-export { auth, db, provider, analytics };
+export { auth, provider };
