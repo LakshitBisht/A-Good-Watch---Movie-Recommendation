@@ -24,7 +24,9 @@ function Signup() {
 
   useEffect(() => {
     if (error) {
-      setTimeout(() => {}, 5000);
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
     }
   }, [error]);
 

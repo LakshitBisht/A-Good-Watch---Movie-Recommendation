@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+// import './Navbar.css';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowDropDown} from '@material-ui/icons';
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
-import './Navbar.css';
 import {NavLink, useNavigate, useLocation} from 'react-router-dom';
 import {useSelector} from 'react-redux';  
 import {selectUser} from '../../features/userSlice';

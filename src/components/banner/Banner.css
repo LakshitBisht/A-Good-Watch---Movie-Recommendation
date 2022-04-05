@@ -229,7 +229,7 @@ max-width: 840px;
 
 /* vide css */
 
-@keyframes modal-video-inner {
+/* @keyframes modal-video-inner {
 	from {
 	  transform: scale(0.75);
 	  opacity: 0;
@@ -331,4 +331,4 @@ max-width: 840px;
 	left: 50%;
 	background: #fff;
 	border-radius: 5px;
-  }
+  } */

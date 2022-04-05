@@ -1,4 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;900&family=Mulish:wght@700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;900&family=Mulish:wght@700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500&family=Arsenal:ital@1&family=Manjari:wght@100&display=swap");
+
+:root {
+  --clr-primary: #171717;
+  --clr-secondry: #444444;
+  --clr-accent1: #DA0037;
+  --clr-accent2: #EDEDED;
+
+  --clr-placeholder: rgba(255, 255, 255, 0.5);
+
+  --ff-primary: "Work Sans", sans-serif;
+  --ff-secondary: "Mulish", sans-serif;
+}
 
 html {
   scroll-behavior: smooth;
@@ -6,12 +19,12 @@ html {
 
 body {
   margin: 0;
-  font-family: "Work Sans", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 16px;
-  color: #fff;
-  background: #4ca1af;
+  font-family: var(--ff-primary);
+  color: var(--clr-accent2);
+  font-size: 24px;
+  background: var(--clr-primary);
+  font-weight: 400;
+    line-height: 1.33;
 }
 
 body::-webkit-scrollbar {
@@ -24,7 +37,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Mulish";
+  font-family: var(--ff-secondary);
   font-weight: 800;
 }
 
@@ -34,5 +47,10 @@ button:focus {
 }
 
 ::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--clr-placeholder);
+}
+
+*, :after, :before {
+  box-sizing: border-box;
+  margin: 0;
 }

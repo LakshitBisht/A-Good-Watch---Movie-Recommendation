@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import Footer from "../../components/footer/Footer";
 
 function Login() {
   const location = useLocation();
@@ -32,7 +33,6 @@ function Login() {
         setError(null);
       }, 5000);
     }
-    return setError;
   }, [error]);
 
   const googleSignIn = (e) => {
@@ -71,7 +71,7 @@ function Login() {
         }
       )
       .catch(() => {
-        setError("Login Failed!");
+        setError("User Not Found!");
         setLoading(false);
       });
   };
@@ -85,11 +85,12 @@ function Login() {
         layout
         onSubmit={handleSubmit}
       >
-        <h2>Login</h2>
-        {error && <p className="error">{error}</p>}
-        <div className="input">
-          <label>Email Address</label>
+        <h2 className="login__title">Login</h2>
+        {error && <p className="login__error">{error}</p>}
+        <div className="login__input">
+          <label className="login__input__label">Email Address</label>
           <input
+          className="login__input__input"
             type="email"
             required
             ref={emailRef}
@@ -98,33 +99,35 @@ function Login() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="input">
-          <label>Password</label>
+        <div className="login__input">
+          <label className="login__input__label">Password</label>
           <input
+            className="login__input__input"
             type="password"
             required
             ref={passwordRef}
             placeholder="••••••••"
           />
         </div>
-        <button style={{ backgroundColor: "#3cb19f" }} disabled={loading}>
-          {loading ? "Logging In..." : "Log In"}
-        </button>
-        <button className="google" disabled={loading} onClick={googleSignIn}>
-          Sign In with Google
-        </button>
-        <div className="forgotPassword">
+        <p className="login__link">
           <Link to="/forgot-password" state={{ email: email }}>
             Forgot Password?
           </Link>
-        </div>
-        <p>
-          {"New to AGoodWatch?"}
+        </p>
+        <button className="login__button" disabled={loading}>
+          {loading ? "Logging In..." : "Log In"}
+        </button>
+        <button className="login__button login__google" disabled={loading} onClick={googleSignIn}>
+          Sign In with Google
+        </button>
+        <p className="login__link">
+          {"New to A Good Watch?  "}
           <Link to="/signup" replace>
             Sign Up Now.
           </Link>
         </p>
       </motion.form>
+      <Footer />
     </div>
   );
 }

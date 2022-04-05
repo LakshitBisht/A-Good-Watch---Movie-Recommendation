@@ -1,5 +1,5 @@
+// import "./Banner.css";
 import { useState, useEffect } from "react";
-import "./Banner.css";
 import TextTruncate from "react-text-truncate";
 import Rating from "@material-ui/lab/Rating";
 import StarRoundedIcon from "@material-ui/icons/StarRounded";

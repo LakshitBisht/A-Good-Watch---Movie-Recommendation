@@ -1,5 +1,4 @@
-import React from 'react';
-import './BigCards.css';
+// import './BigCards.css';
 import StarRoundedIcon from "@material-ui/icons/StarRounded";
 import Rating from "@material-ui/lab/Rating";
 import TextTruncate from "react-text-truncate";
