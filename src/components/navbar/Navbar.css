@@ -1,8 +1,7 @@
-.nav{
-    
+.navbar{
     width: 100%;
     color: white;
-    font-size: 14px;
+    font-size: 1rem;
     position: fixed;
     top: 0;
     z-index: 999;
@@ -14,7 +13,7 @@
 }
 
 .nav-black{
-    background-color: #0b0b0b;
+    background-color: #111;
 }
 
 .nav-items {
@@ -22,10 +21,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 50px;
+    height: 60px;
 }
 
 .nav-left{
+    list-style: none;
     display: flex;
     align-items: center;
 }
@@ -33,56 +33,62 @@
 .logo {
     height: 50px;
     margin-right: 40px;
-
-    /* @media (max-width: 600px) {
-        display: none;
-    } */
 }
 
-.nav-left span{
-    margin-right: 20px;
-    cursor: pointer;
-
-    /* @media (max-width: 768px) {
-        display: none;
-    } */
+.nav-left li+li{
+    margin-left: 2rem;
 }
 
-/* .navbarmainLinks {
-    @media (max-width: 768px) {
-      display: block;
-    }
-  } */
+.nav-left li a{
+    color : white;
+    text-decoration: none;
+    transition: all 0.4s;
+}
+
+.nav-left li a:hover{
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.nav-left li a.active{
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
 
 .nav-right{
     display: flex;
     align-items: center;
 }
 
-.nav-icon{
-    margin: 0px 15px;
-    cursor: pointer;
-}
 
 .avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 5px;
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
     object-fit: cover;
     cursor: pointer;
+    margin-left: 1rem;
 }
 
 .options{
     display: none;
-    background-color: #0b0b0b;
+    background-color: #111;
     border-radius: 5px;
+    padding-inline-start: 0;
 }
 
-.nav-profile span{
+.nav-profile li{
     padding: 10px;
     cursor: pointer;
+    list-style: none;
 }
 
+.nav-profile:hover .nav-icon {
+    transform: rotate(180deg);
+    transition: all 0.2s;
+}
 .nav-profile:hover .options {
     display: flex;
     flex-direction: column;
@@ -90,25 +96,7 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-a.active {
-    font-weight: 700;
-    }
-    .app__nav li+li {
-        margin-left: 2rem;
-    }
-    
-    .app__search {
+    .nav-search {
         display: flex;
         align-items: center;
         background: transparent;
@@ -117,23 +105,47 @@ a.active {
         border: 1px solid rgba(255, 255, 255, 0.5);
         border-radius: 99px;
         transition: width 0.2s;
-        width: calc(2rem + 1px);
+        width: 2rem;
+        height: 2rem;
         overflow: hidden;
         cursor: pointer;
     }
     
-    .app__search.open {
+    .nav-search:hover{
+        border : 2px solid rgba(255, 255, 255, 0.8);
+        padding-left: .3rem;
+    }
+
+    .nav-search.open {
         width: 12rem;
     }
     
-    .app__searchIcon {
+    .nav-searchIcon {
         margin-right: 0.375rem;
     }
     
-    .app__search input {
+    .nav-search input {
         background: transparent;
         color: #fff;
         border: none;
         width: 100%;
         padding-right: 0.5rem;
+    }
+
+   @media (max-width: 870px) {
+        .nav-items{
+            padding: 0px 10px;
+        };
+        .logo{
+            margin-right: 20px;
+        }
+        .nav-left li+li{
+            margin-left: 1rem;
+        }
+    }
+
+    @media (max-width: 732px) {
+        .nav-left li a{
+            display: none;
+        }
     }

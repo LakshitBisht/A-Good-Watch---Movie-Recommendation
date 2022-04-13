@@ -32,7 +32,6 @@ function Login() {
         setError(null);
       }, 5000);
     }
-    return setError;
   }, [error]);
 
   const googleSignIn = (e) => {
@@ -98,7 +97,7 @@ function Login() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="input">
+        <div className="input password-input">
           <label>Password</label>
           <input
             type="password"
@@ -107,18 +106,18 @@ function Login() {
             placeholder="••••••••"
           />
         </div>
+        <div className="forgotPassword">
+          <Link to="/forgot-password" state={{ email: email }}>
+            Forgot Password?
+          </Link>
+        </div>
         <button style={{ backgroundColor: "#3cb19f" }} disabled={loading}>
           {loading ? "Logging In..." : "Log In"}
         </button>
         <button className="google" disabled={loading} onClick={googleSignIn}>
           Sign In with Google
         </button>
-        <div className="forgotPassword">
-          <Link to="/forgot-password" state={{ email: email }}>
-            Forgot Password?
-          </Link>
-        </div>
-        <p>
+        <p className="signup-link">
           {"New to AGoodWatch?"}
           <Link to="/signup" replace>
             Sign Up Now.

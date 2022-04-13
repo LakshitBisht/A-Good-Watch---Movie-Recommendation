@@ -52,7 +52,7 @@ function ForgotPass() {
         }
       )
       .catch((error) => {
-        setError(error.message);
+        setError("User does not exist!");
         setLoading(false);
       });
   };
@@ -79,14 +79,14 @@ function ForgotPass() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <button style={{ backgroundColor: "#3cb19f" }} disabled={loading}>
+        <button style={{ backgroundColor: "#ec215f" }} disabled={loading}>
           {loading ? "Sending Mail..." : "Reset Password"}
         </button>
-        <div className="login-link">
+        <p>
           <Link to="/login" state={{ email: email }}>
-            Login
+            Back to Login
           </Link>
-        </div>
+        </p>
       </motion.form>
     </div>
   );

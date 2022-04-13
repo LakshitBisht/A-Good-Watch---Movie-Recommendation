@@ -17,12 +17,7 @@ function SearchResult() {
     useEffect(() => {
         async function fetchData() {
             const request = await axios.get(fetchSearchQuery(searchQueryUrl.get('q'))).then(response => {
-                if(response.data.results.length === 0){
-                    toast.error("No results found");
-                }
-                else{
                 setSearchResults(response.data.results);
-                }
             }).catch(error => {toast.error(error.message)});
             return request;
         }

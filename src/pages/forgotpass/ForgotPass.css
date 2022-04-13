@@ -2,8 +2,7 @@
     width: 100%;
     min-height: 100vh;
     padding: 3rem;
-    background: #2c3e50;
-    margin-top: -6rem;
+    background: #222831;
     position: relative;
     z-index: 1;
     display: grid;
@@ -29,7 +28,7 @@
     background-image: url("https://github.com/santdas36/netflix-ish/blob/main/papareact-day4/src/assets/nfbg.jpg?raw=true");
     background-size: cover;
     mix-blend-mode: overlay;
-    -webkit-mask-image: radial-gradient(ellipse farthest-side at 50% 50%, #2c3e50, rgba(0,0,0,0.1));
+    -webkit-mask-image: radial-gradient(ellipse farthest-side at 50% 50%, #222831, rgba(0,0,0,0.1));
     width: 100%;
     height: 100%;
     left: 0;
@@ -38,7 +37,7 @@
     }
     
     .forgotpass form {
-    background: rgba(23,32,50,0.75);
+    background: rgba(30,32,34,0.75);
     padding: 3rem;
     margin: 6rem 1.5rem 1.5rem 1.5rem;
     z-index: 99;
@@ -53,7 +52,7 @@
     margin-bottom: 1.5rem;
     }
     .forgotpass input {
-    background: #2c3e50;
+    background: #222831;
     padding: 0.6rem 0.75rem;
     width: 100%;
     border: 1px rgba(255,255,255,0.15) solid;
@@ -69,12 +68,12 @@
     margin-bottom: 0.5rem;
     font-family: "Mulish";
     }
-    .forgotpass h3 {
+    .forgotpass h2 {
     margin-bottom: 3rem;
     }
     .forgotpass input:focus {
     border: 1px rgba(255,255,255,0.5) solid;
-    background: #4ca1af;
+    background: #444444;
     outline: none;
     }
     .forgotpass button {
@@ -99,25 +98,21 @@
     transform: scale(0.98);
     outline: none;
     }
-    .forgotpass button.google {
-    background: rgba(255,255,255,0.05);
-    border: 1px rgba(255,255,255,0.5) solid;
-    font-weight: 400;
-    }
+
     .forgotpass form p {
-    margin-top: 1.5rem;
-    font-size: 0.95rem;
-    font-family: "Mulish";
+        margin-top: 0rem;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        font-family: "Mulish";
     }
-    .forgotpass form p span {
-    opacity: 0.75;
+    .forgotpass form p a {
+        color: #3cb19f;
+      opacity: 0.75;
+      font-weight: 800;
+      text-decoration: none;
+      transition: all 0.2s;
     }
-    .forgotpass form p b {
-    font-weight: 800;
-    text-decoration: none;
-    transition: all 0.2s;
-    }
-    form p b:hover {
+    form p a:hover {
     text-decoration: underline !important;
     }
     

@@ -2,8 +2,7 @@
     width: 100%;
     min-height: 100vh;
     padding: 3rem;
-    background: #2c3e50;
-    margin-top: -6rem;
+    background: #222831;
     position: relative;
     z-index: 1;
     display: grid;
@@ -29,7 +28,7 @@
     background-image: url("https://github.com/santdas36/netflix-ish/blob/main/papareact-day4/src/assets/nfbg.jpg?raw=true");
     background-size: cover;
     mix-blend-mode: overlay;
-    -webkit-mask-image: radial-gradient(ellipse farthest-side at 50% 50%, #2c3e50, rgba(0,0,0,0.1));
+    -webkit-mask-image: radial-gradient(ellipse farthest-side at 50% 50%, #222831, rgba(0,0,0,0.1));
     width: 100%;
     height: 100%;
     left: 0;
@@ -38,7 +37,7 @@
     }
     
     .login form {
-    background: rgba(23,32,50,0.75);
+    background: rgba(30,32,34,0.75);
     padding: 3rem;
     margin: 6rem 1.5rem 1.5rem 1.5rem;
     z-index: 99;
@@ -53,7 +52,7 @@
     margin-bottom: 1.5rem;
     }
     .login input {
-    background: #2c3e50;
+    background: #222831;
     padding: 0.6rem 0.75rem;
     width: 100%;
     border: 1px rgba(255,255,255,0.15) solid;
@@ -69,12 +68,12 @@
     margin-bottom: 0.5rem;
     font-family: "Mulish";
     }
-    .login h3 {
+    .login h2 {
     margin-bottom: 3rem;
     }
     .login input:focus {
     border: 1px rgba(255,255,255,0.5) solid;
-    background: #4ca1af;
+    background: #444444;
     outline: none;
     }
     .login button {
@@ -104,26 +103,46 @@
     border: 1px rgba(255,255,255,0.5) solid;
     font-weight: 400;
     }
-    .login form p {
-    margin-top: 1.5rem;
-    font-size: 0.95rem;
+    .login .signup-link {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
     font-family: "Mulish";
     }
-    .login form p span {
+    .login .signup-link a {
+      padding-left: 10px;
+      color: #FF2E63;
     opacity: 0.75;
-    }
-    .login form p b {
     font-weight: 800;
     text-decoration: none;
     transition: all 0.2s;
     }
-    form p b:hover {
+
+    form .signup-link a:hover {
     text-decoration: underline !important;
+    }
+    
+    .login .password-input{
+      margin-bottom: 1rem;
+    }
+    .forgotPassword{
+      margin-bottom: 1.5rem;
+    }
+    .forgotPassword a{
+      opacity: 0.75;
+      color: #FF2E63;
+      font-family: "Mulish";
+      font-weight: 800;
+      text-decoration: none;
+      transition: all 0.2s;
+      font-size: 0.85rem;
+    }
+
+    .forgotPassword a:hover {
+      text-decoration: underline !important;
     }
     
     @media (max-width: 550px) {
     .login, .login form {
     padding: 3rem 1.5rem;
-    }
-    }
-    
+    }}

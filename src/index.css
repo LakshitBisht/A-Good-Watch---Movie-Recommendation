@@ -11,7 +11,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-size: 16px;
   color: #fff;
-  background: #4ca1af;
+  background: #111;
+  line-height: 1.33;
 }
 
 body::-webkit-scrollbar {
@@ -35,4 +36,9 @@ button:focus {
 
 ::placeholder {
   color: rgba(255, 255, 255, 0.5);
+}
+
+*, :after, :before {
+  box-sizing: border-box;
+  margin: 0;
 }

@@ -1,10 +1,10 @@
-.list.biglist {
+/* .list.biglist {
     background: #2c3e50;
   }
   
   .bigList_gradient {
     background: linear-gradient(to bottom, #3A6979, #2c3e50) !important;
-  }
+  } */
   
   .list__trending.list__big {
     flex: 0 0 100%;
@@ -19,7 +19,7 @@
 	padding: 1.5rem 3rem;
 	display: flex;
 	width: 100%;
-	background: linear-gradient(to bottom, #3A6979, #2c3e50);
+	/* background: linear-gradient(to bottom, #3A6979, #2c3e50); */
 }
 
 .list h4 {
