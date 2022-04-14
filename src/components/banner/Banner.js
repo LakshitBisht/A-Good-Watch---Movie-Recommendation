@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./Banner.css";
-import TextTruncate from "react-text-truncate";
+import ReactReadMoreReadLess from "react-read-more-read-less";
 import Rating from "@material-ui/lab/Rating";
 import StarRoundedIcon from "@material-ui/icons/StarRounded";
 import PlayArrowRoundedIcon from "@material-ui/icons/PlayArrowRounded";
@@ -22,7 +22,6 @@ export default function Banner({ title, fetchURL }) {
   const [movieCertification, setMovieCertification] = useState("NA");
   const [playTrailer, setPlayTrailer] = useState(false);
   const [videoId, setVideoId] = useState("");
-  const [truncLine, setTruncLine] = useState(2);
 
   const myList = useSelector(selectMyList);
   const dispatch = useDispatch();
@@ -79,11 +78,6 @@ export default function Banner({ title, fetchURL }) {
     };
   }, [fetchURL, setBannerMovie, setMovieCertification, title]);
 
-  const readMore = (e) => {
-    e.preventDefault();
-    setTruncLine(0);
-    e.target.style.display = "none";
-  };
 
   const getReleaseYear = (date) => {
     let year = new Date(date);
@@ -145,14 +139,17 @@ export default function Banner({ title, fetchURL }) {
                 </span>
               ))}
             </p>
-            <TextTruncate
-              line={truncLine}
-              element="p"
-              containerClassName="banner-featuredDesc"
-              textTruncateChild={<small onClick={readMore}>[Read more]</small>}
-              truncateText="…"
-              text={bannerMovie.overview}
-            />
+            <div className="banner-featuredDesc">            <ReactReadMoreReadLess
+              charLimit={100}
+              readMoreText="[Read More]"
+              readMoreClassName="Desc-readMore"
+              readLessText="[Read Less]"
+              readLessClassName="Desc-readLess"
+              >
+              {bannerMovie.overview ? bannerMovie.overview : "No Description Available."}
+            </ReactReadMoreReadLess>
+            </div>
+              
             {bannerMovie.number_of_seasons && (
               <p className="banner-seriesSeasons">
                 {bannerMovie.number_of_seasons} Seasons,{" "}
