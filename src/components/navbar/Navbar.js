@@ -24,6 +24,7 @@ function Navbar({
     location?.state?.searchActive || !searchNavigate
   );
   const [searchQuery, setSearchQuery] = useState(searchQueryUrl);
+  const [hamburgerActive, setHamburgerActive] = useState(false);
 
   const searchQueryRef = useRef();
 
@@ -103,18 +104,55 @@ function Navbar({
 
   return (
     <div className={`navbar ${navClass}`}>
+      <div className={`hamburger-overlay ${hamburgerActive ? "overlay-slide-left" : "overlay-slide-right"}`}>
+        <ul>
+        <li>
+          <NavLink to="/browse" data-after={"Home"}>Home</NavLink>
+        </li>
+        <li>
+          <NavLink to="/movies" data-after={"Movies"}>Movies</NavLink>
+        </li>
+        <li>
+          <NavLink to="/series" data-after={"Series"}>Series</NavLink>
+        </li>
+        <li>
+          <NavLink to="/mylist" data-after={"My List"}>My List</NavLink>
+        </li>
+        </ul>
+      </div>
+
       <div className="nav-items">
         <ul className="nav-left">
-          <li><img className="logo" src={LogoImg} alt="logo.png" /></li>
-          <li><NavLink to="/browse">Home</NavLink></li>
-          <li><NavLink to="/movies">Movies</NavLink></li>
-          <li><NavLink to="/series">Series</NavLink></li>
-          <li><NavLink to="/mylist">My List</NavLink></li>
+          <div
+            className={`hamburger-lines ${hamburgerActive ? "active" : ""} ${
+              searchActive ? "hidden" : ""
+            }`}
+            onClick={() => setHamburgerActive(!hamburgerActive)}
+          >
+            <span className="line line1"></span>
+            <span className="line line2"></span>
+            <span className="line line3"></span>
+          </div>
+          <li>
+            <img className="logo" src={LogoImg} alt="logo.png" />
+          </li>
+          <li>
+            <NavLink to="/browse">Home</NavLink>
+          </li>
+          <li>
+            <NavLink to="/movies">Movies</NavLink>
+          </li>
+          <li>
+            <NavLink to="/series">Series</NavLink>
+          </li>
+          <li>
+            <NavLink to="/mylist">My List</NavLink>
+          </li>
         </ul>
 
         <ul className="nav-right">
           <li
-            className={`nav-search mobile ${searchActive ? "open" : ""}`}
+            className={`nav-search ${searchActive ? "open" : ""}`}
             onClick={() => setSearchActive(true)}
           >
             <SearchRoundedIcon

@@ -9,15 +9,15 @@ function Footer() {
   return (
     <div className="footer">
     <div className="waves">
-                <div class="wave" id="wave1"></div>
-                <div class="wave" id="wave2"></div>
-                <div class="wave" id="wave3"></div>
-                <div class="wave" id="wave4"></div>
+                <div className="wave" id="wave1"></div>
+                <div className="wave" id="wave2"></div>
+                <div className="wave" id="wave3"></div>
+                <div className="wave" id="wave4"></div>
             </div>
 
             <ul className="social_icon">
                 <li>
-                  <a href="https://www.facebook.com/"><FacebookIcon clasName={"logo-facebook"}/></a>
+                  <a href="https://www.facebook.com/"><FacebookIcon className={"logo-facebook"}/></a>
                 </li>
                 <li>
                   <a href="https://twitter.com/"><TwitterIcon className={"logo-twitter"}/></a>
