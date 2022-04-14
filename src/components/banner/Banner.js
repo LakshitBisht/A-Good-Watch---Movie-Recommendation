@@ -123,13 +123,13 @@ export default function Banner({ title, fetchURL }) {
               </Grow>
             )}
 
-            <p className="app__featuredInfo">{title}</p>
-            <h2 className="app__featuredTitle">
+            <p className="banner-featuredInfo">{title}</p>
+            <h2 className="banner-featuredTitle">
               {bannerMovie.title ||
                 bannerMovie.original_title ||
                 bannerMovie.name ||
                 bannerMovie.original_name}
-              <span className="app__featuredYear">
+              <span className="banner-featuredYear">
                 (
                 {getReleaseYear(
                   bannerMovie.release_date || bannerMovie.first_air_date
@@ -137,10 +137,10 @@ export default function Banner({ title, fetchURL }) {
                 )
               </span>
             </h2>
-            <p className="app__featuredGenres">
-              <span className="app__featuredCert">{movieCertification}</span>
+            <p className="banner-featuredGenres">
+              <span className="banner-featuredCert">{movieCertification}</span>
               {bannerMovie?.genres?.slice(0, 3).map((genre) => (
-                <span className="app__featuredGenre" key={genre.id}>
+                <span className="banner-featuredGenre" key={genre.id}>
                   {genre.name}
                 </span>
               ))}
@@ -148,25 +148,25 @@ export default function Banner({ title, fetchURL }) {
             <TextTruncate
               line={truncLine}
               element="p"
-              containerClassName="app__featuredDesc"
-              textTruncateChild={<small onClick={readMore}>[more]</small>}
+              containerClassName="banner-featuredDesc"
+              textTruncateChild={<small onClick={readMore}>[Read more]</small>}
               truncateText="…"
               text={bannerMovie.overview}
             />
             {bannerMovie.number_of_seasons && (
-              <p className="app__seriesSeasons">
+              <p className="banner-seriesSeasons">
                 {bannerMovie.number_of_seasons} Seasons,{" "}
                 {bannerMovie.number_of_episodes} Episodes
               </p>
             )}
-            <div className="app__featuredRating">
+            <div className="banner-featuredRating">
               <Rating
                 name="movie-rating"
                 value={bannerMovie.vote_average / 2}
                 precision={0.5}
                 icon={<StarRoundedIcon fontSize="inherit" readOnly />}
               />
-              <p className="app__featuredLikes">
+              <p className="banner-featuredLikes">
                 {numeral(bannerMovie.vote_average / 2).format("0.0")}
                 <small>
                   ({numeral(bannerMovie.vote_count).format("0,0")})
@@ -174,7 +174,7 @@ export default function Banner({ title, fetchURL }) {
               </p>
             </div>
             <Button
-              className="app__button"
+              className="banner-button"
               variant="contained"
               onClick={() => setPlayTrailer(true)}
               startIcon={<PlayArrowRoundedIcon />}
@@ -184,7 +184,7 @@ export default function Banner({ title, fetchURL }) {
             </Button>
             { myList.some(media => media.id === bannerMovie.id && media.media_type === bannerMovie.media_type) ? 
             <Button
-            className="app__button"
+            className="banner-button"
             variant="contained"
             onClick={removeFromWatchList}
             startIcon={<RemoveIcon />}>
@@ -192,7 +192,7 @@ export default function Banner({ title, fetchURL }) {
           </Button>
             :
             <Button
-              className="app__button"
+              className="banner-button"
               variant="contained"
               onClick={addToWatchList}
               startIcon={<AddIcon />}>

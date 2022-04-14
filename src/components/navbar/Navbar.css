@@ -250,7 +250,7 @@
             }
 
             .hamburger-overlay ul a{
-              font-size: 2.5rem;
+              font-size: 1.5rem;
               font-weight: 500;
               letter-spacing: 0.2rem;
               text-decoration: none;
@@ -268,8 +268,7 @@
                 left: 50%;
                 transform: translate(-50%, -50%) scale(0);
                 color: rgba(201, 214, 223, 0.05);
-                font-size: 6.5rem;
-                font-weight: 600;
+                font-size: 4.5rem;
                 letter-spacing: 50px;
                 z-index: -1;
                 transition: 0.3s ease letter-spacing;

@@ -10,7 +10,7 @@
 .banner-items{
     margin-left: 30px;
     padding-top: 140px;
-    height: 190px;
+    height: 100%;
 }
 
 .category {
@@ -52,8 +52,8 @@
 }
 
 .banner-bottomFade{
-	margin-block-start: 192px;
     height: 7.4rem;
+	margin-top: -7.4rem;
     background-image: linear-gradient(
         180deg,
         transparent,
@@ -100,24 +100,18 @@
     transition: all 0.2s ease-in-out;
 }
 
-.app__featured {
-	padding: 7rem 3rem 3rem;
-	width: 100%;
-	background: linear-gradient(to top, #3a6979, #4ca1af);
-}
-
-.app__featuredInfo {
+.banner-featuredInfo {
 	margin: 0;
 	font-weight: 500;
 	text-transform: uppercase;
 }
 
-.app__featuredTitle {
+.banner-featuredTitle {
 	font-weight: 900;
-max-width: 840px;
+	max-width: 840px;
 }
 
-.app__featuredGenres {
+.banner-featuredGenres {
 	text-transform: uppercase;
 	font-size: 0.95rem;
 	white-space: nowrap;
@@ -127,7 +121,7 @@ max-width: 840px;
 	font-weight: 500;
 }
 
-.app__seriesSeasons {
+.banner-seriesSeasons {
 	text-transform: uppercase;
 	font-size: 0.95rem;
 	margin: 0;
@@ -135,11 +129,11 @@ max-width: 840px;
 	font-weight: 500;
 }
 
-.app__featuredGenre:not(:last-of-type):after {
+.banner-featuredGenre:not(:last-of-type):after {
 	content: ", ";
 }
 
-.app__featuredCert {
+.banner-featuredCert {
 	padding: 0.25rem 0.5rem;
 	background: rgba(255,255,255,0.1);
 	border: 1px solid #fff;
@@ -148,7 +142,7 @@ max-width: 840px;
 	margin-left: -4px;
 }
 
-.app__featuredYear {
+.banner-featuredYear {
 	font-size: 1.5rem;
 	margin-left: 0.75rem;
 	font-family: "Work Sans", sans-serif;
@@ -156,20 +150,21 @@ max-width: 840px;
 	opacity: 0.5;
 }
 
-.app__featuredDesc {
-	width: 50%;
+.banner-featuredDesc {
+	margin-top: 10px;
+	width: 50vw;
 }
 
-.app__featuredDesc a {
-	opacity: 0.5;
+.banner-featuredDesc small {
+	opacity: 0.7;
 	transition: opacity 0.1s ease;
 }
 
-.app__featuredDesc a:hover {
+.banner-featuredDesc small:hover {
 	opacity: 1;
 }
 
-.app__featuredRating {
+.banner-featuredRating {
 	display: flex;
 	align-items: center;
 	margin-bottom: 1rem;
@@ -179,12 +174,12 @@ max-width: 840px;
 	color: rgba(255, 255, 255, 0.5) !important;
 }
 
-.app__featuredLikes {
+.banner-featuredLikes {
 	margin: 0;
 	margin-left: 0.5rem;
 }
 
-.app__button {
+.banner-button {
 	border-radius: 99px !important;
 	color: #3a6979 !important;
 	font-weight: 500 !important;
@@ -192,38 +187,38 @@ max-width: 840px;
 	background-color: rgb(255, 255, 255) !important;
 }
 
-.app__button:hover {
+.banner-button:hover {
 	background-color: rgb(215, 215, 215) !important;
 }
 
-.app__button:disabled {
+.banner-button:disabled {
 	background-color: rgb(215, 215, 215) !important;
 }
 
 @media (max-width: 550px) {
-	.app__featured {
+	.banner-featured {
 		padding: 7rem 1.5rem 3rem 1.5rem;
 	}
 
-	.app__featuredDesc {
+	.banner-featuredDesc {
 		width: 100%;
 		font-size: 0.85rem;
 	}
 
-	.app__featuredGenres,
-	.app__seriesSeasons {
+	.banner-featuredGenres,
+	.banner-seriesSeasons {
 		font-size: 14px !important;
 	}
 
-	.app__featuredCert {
+	.banner-featuredCert {
 		padding: 0.15rem 0.3rem;
 	}
 
-	.app__featuredInfo {
+	.banner-featuredInfo {
 		font-size: 0.66rem;
 	}
 
-	.app__featuredYear {
+	.banner-featuredYear {
 		font-size: 1rem;
 	}
 }
