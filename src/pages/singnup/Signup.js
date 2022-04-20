@@ -24,7 +24,9 @@ function Signup() {
 
   useEffect(() => {
     if (error) {
-      setTimeout(() => {}, 5000);
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
     }
   }, [error]);
 
@@ -90,7 +92,7 @@ function Signup() {
       >
         <h2>Sign Up</h2>
         {error && <p className="error">{error}</p>}
-        <div className="input">
+        <div className="input-div">
           <label>Username</label>
           <input
             type="text"
@@ -99,7 +101,7 @@ function Signup() {
             placeholder="Enter Your Name"
           />
         </div>
-        <div className="input">
+        <div className="input-div">
           <label>Email Address</label>
           <input
             type="email"
@@ -108,7 +110,7 @@ function Signup() {
             placeholder="Enter Your Email"
           />
         </div>
-        <div className="input">
+        <div className="input-div">
           <label>Password</label>
           <input
             type="password"
@@ -117,7 +119,7 @@ function Signup() {
             placeholder="••••••••"
           />
         </div>
-        <div className="input">
+        <div className="input-div">
           <label>Confirm Password</label>
           <input
             type="password"
@@ -126,14 +128,14 @@ function Signup() {
             placeholder="••••••••"
           />
         </div>
-        <button style={{ backgroundColor: "#ec215f" }} disabled={loading}>
+        <button disabled={loading}>
           {loading ? "Signing up..." : "Create Account"}
         </button>
         <button className="google" disabled={loading} onClick={googleSignIn}>
           Sign In with Google
         </button>
         <p>
-          Already have an account?
+          {"Already have an account? "}
           <Link to="/login">Login Instead.</Link>
         </p>
       </motion.form>

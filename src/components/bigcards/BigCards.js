@@ -9,14 +9,15 @@ import { useNavigate } from 'react-router-dom';
 function BigCards({title, media}) {
 
     const navigate = useNavigate();
-    const handleClick = (movie) => {
-		if(!movie.media_type){
-        if(movie.media_type === 'movie') {
-            movie.bannerTitle = "Selected Movie";
+	
+    const handleClick = (media) => {
+		if(!media.bannerTitle){
+        if(media.media_type === 'movie') {
+            media.bannerTitle = "Selected Movie";
                 } else {
-            movie.bannerTitle = "Selected TV Show";
+            media.bannerTitle = "Selected Series";
                 }}
-        navigate('/browse', {state: {bannerMedia : movie}});
+        navigate('/browse', {state: {bannerMedia : media}});
       }
     
       const getReleaseYear = (date) => {
@@ -27,27 +28,27 @@ function BigCards({title, media}) {
   return (
     <div className="big-cards">
         <h4>{title}</h4>
-			<div className="results__list">
-				{ media?.map((movie) => movie.media_type !== 'person' && (movie.poster_path || movie.backdrop_path) &&
-					(<div className="list__item" key={movie.id} onClick={() => handleClick(movie)}>
+			<div className="big-list">
+				{ media?.map((media) => media.media_type !== 'person' && (media.poster_path || media.backdrop_path) &&
+					(<div className="big-list-item" key={media.id} onClick={() => handleClick(media)}>
 						<img 
                             loading="lazy"
-                            src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path || movie.poster_path}`}
-                            alt={movie.name}
+                            src={`https://image.tmdb.org/t/p/original/${media.poster_path || media.backdrop_path}`}
+                            alt={media.name}
                         />
-						<h5 className="list__itemType">{movie.media_type}</h5>
-						<div className="list__itemInfo">
-							<h5 className="list__itemTitle">{movie.title || movie.original_title || movie.name || movie.original_name}<span className="list__itemYear">({getReleaseYear(movie.release_date || movie.first_air_date)})</span></h5>
+						<h5 className="big-list-itemType">{media.media_type}</h5>
+						<div className="big-list-itemInfo">
+							<h5 className="big-list-itemTitle">{media.title || media.original_title || media.name || media.original_name}{" "}<span className="big-list-itemYear">({getReleaseYear(media.release_date || media.first_air_date)})</span></h5>
 							<TextTruncate
 								line={2}
 								element="p"
-								containerClassName="list__itemOverview"
+								containerClassName="big-list-itemOverview"
 								truncateText="…"
-								text={movie.overview}
+								text={media.tagline||media.overview}
 							/>
-							<div className="list__rating">
-								<Rating name="movie-rating" className="movieRating" value={(movie.vote_average / 2) || 0} precision={0.5} icon={<StarRoundedIcon fontSize="inherit" readOnly />}/>
-								<small className="list__likes">{movie.vote_average / 2}</small>
+							<div className="big-list-rating">
+								<Rating name="media-rating" className="mediaRating" value={(media.vote_average / 2) || 0} precision={0.5} icon={<StarRoundedIcon fontSize="inherit" readOnly />}/>
+								<small className="big-list-likes">{media.vote_average / 2}</small>
 							</div>
 						</div>
 					</div> )

@@ -1,0 +1,11 @@
+.series{
+    min-height: 100vh;
+    padding-bottom: 310px;
+}
+
+@media (max-width: 450px)
+{
+    .series{
+    padding-bottom: 410px;
+    }
+}

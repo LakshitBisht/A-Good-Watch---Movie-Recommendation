@@ -32,7 +32,7 @@ function SearchResult() {
         <Navbar searchNavigate={false} searchQueryUrl={searchQueryUrl.get('q')} setSearchQueryUrl={setSearchQueryUrl}/>
         {searchResults?.length > 0 ? 
         <BigCards title={"Search Results"} media={searchResults} />
-        : <div className='searchResult__noResults'>No Results Found</div>
+        : <div className='noResultsFound'><h2>No Results Found</h2></div>
         }
         <Footer/>
     </div>

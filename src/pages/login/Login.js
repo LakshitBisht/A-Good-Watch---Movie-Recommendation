@@ -86,7 +86,7 @@ function Login() {
       >
         <h2>Login</h2>
         {error && <p className="error">{error}</p>}
-        <div className="input">
+        <div className="input-div">
           <label>Email Address</label>
           <input
             type="email"
@@ -97,7 +97,7 @@ function Login() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="input password-input">
+        <div className="input-div">
           <label>Password</label>
           <input
             type="password"
@@ -106,23 +106,18 @@ function Login() {
             placeholder="••••••••"
           />
         </div>
-        <div className="forgotPassword">
+        <p className="forgotPassword">
           <Link to="/forgot-password" state={{ email: email }}>
             Forgot Password?
           </Link>
-        </div>
-        <button style={{ backgroundColor: "#3cb19f" }} disabled={loading}>
+        </p>
+        <button disabled={loading}>
           {loading ? "Logging In..." : "Log In"}
         </button>
         <button className="google" disabled={loading} onClick={googleSignIn}>
           Sign In with Google
         </button>
-        <p className="signup-link">
-          {"New to AGoodWatch?"}
-          <Link to="/signup" replace>
-            Sign Up Now.
-          </Link>
-        </p>
+        <p>{"New to AGoodWatch? "}<Link to="/signup" replace>Sign Up Now.</Link></p>
       </motion.form>
     </div>
   );

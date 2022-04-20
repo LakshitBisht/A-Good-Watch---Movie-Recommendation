@@ -68,7 +68,7 @@ function ForgotPass() {
       >
         <h2>Forgot Password</h2>
         {error && <p className="error">{error}</p>}
-        <div className="input">
+        <div className="input-div">
           <label>Email Address</label>
           <input
             type="email"
@@ -79,7 +79,7 @@ function ForgotPass() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <button style={{ backgroundColor: "#ec215f" }} disabled={loading}>
+        <button disabled={loading}>
           {loading ? "Sending Mail..." : "Reset Password"}
         </button>
         <p>

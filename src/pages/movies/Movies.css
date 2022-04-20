@@ -1,0 +1,11 @@
+.movies{
+    min-height: 100vh;
+    padding-bottom: 310px;
+}
+
+@media (max-width: 450px)
+{
+    .movies{
+    padding-bottom: 410px;
+    }
+}
