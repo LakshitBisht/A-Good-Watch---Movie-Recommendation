@@ -5,9 +5,10 @@ import {
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { login, createUserDB } from "../../features/userSlice";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { fetchAvatarImg } from "../../api/requests";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
@@ -22,6 +23,8 @@ function Signup() {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (error) {
       setTimeout(() => {
@@ -34,7 +37,8 @@ function Signup() {
     e.preventDefault();
     setLoading(true);
     signInWithPopup(auth, provider)
-      .then(() => {
+      .then((result) => {
+        dispatch(createUserDB(result.user.email));
         setLoading(false);
         toast.success("Welcome!");
         setTimeout(() => {
@@ -49,6 +53,9 @@ function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(passwordRef.current.value.length < 6){
+     return setError("Passwords Should be of Atleast 6 Characters!");
+    }
     if (passwordRef.current.value !== confirmPasswordRef.current.value) {
       return setError("Passwords Do Not Match!");
     }
@@ -63,22 +70,27 @@ function Signup() {
           email,
           password
         ).then(async () => {
+          dispatch(createUserDB(email));
           await updateProfile(auth.currentUser, {
             displayName: username,
-            photoURL: fetchAvatarImg(email),
+            photoURL: `https://avatars.dicebear.com/api/adventurer-neutral/${email}.svg`,
           });
+          dispatch(login({
+            uid: auth.currentUser.uid,
+            email: auth.currentUser.email,
+            displayName: auth.currentUser.displayName,
+            photoURL: auth.currentUser.photoURL
+          }));
           setLoading(false);
-          setTimeout(() => {
             navigate("/browse", { replace: true });
-          }, 1000);
         }),
         {
-          pending: "Creating Account...",
-          success: "Setting Up Account...",
+          pending: "Setting Up Account...",
+          success: "Account Created Successfully!",
           error: "An error occurred",
         }
       )
-      .catch((error) => {
+      .catch(() => {
         setError("Sign Up Failed!");
         setLoading(false);
       });
@@ -102,6 +114,7 @@ function Signup() {
             required
             ref={usernameRef}
             placeholder="Enter Your Name"
+            autoComplete="on"
           />
         </div>
         <div className="input-div">
@@ -111,6 +124,7 @@ function Signup() {
             required
             ref={emailRef}
             placeholder="Enter Your Email"
+            autoComplete="on"
           />
         </div>
         <div className="input-div">
@@ -120,6 +134,7 @@ function Signup() {
             required
             ref={passwordRef}
             placeholder="••••••••"
+            autoComplete="new-password"
           />
         </div>
         <div className="input-div">
@@ -129,6 +144,7 @@ function Signup() {
             required
             ref={confirmPasswordRef}
             placeholder="••••••••"
+            autoComplete="new-password"
           />
         </div>
         <button disabled={loading}>

@@ -77,6 +77,7 @@ function ForgotPass() {
             ref={emailRef}
             placeholder="Enter Your Email"
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="on"
           />
         </div>
         <button disabled={loading}>

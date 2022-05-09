@@ -4,7 +4,7 @@ import "./Loading.css";
 function Loading({loading=true}) {
   return (
     <div className="loading">
-        <HashLoader size={50}color={'red'} loading={loading}/>
+        <HashLoader size={50} color={'#3cb19f'} loading={loading}/>
 	</div>
   )
 }

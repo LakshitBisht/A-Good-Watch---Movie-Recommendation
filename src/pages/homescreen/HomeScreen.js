@@ -4,8 +4,7 @@ import Navbar from "../../components/navbar/Navbar";
 import Row from "../../components/row/Row";
 import Footer from "../../components/footer/Footer";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../features/userSlice";
-import { selectMyList } from "../../features/mylistSlice";
+import { selectUser, selectMyList } from "../../features/userSlice";
 import Loading from "../../components/loading/Loading";
 import "./HomeScreen.css";
 import {
@@ -17,48 +16,35 @@ import {
 } from "../../api/requests";
 import axios from "../../api/axios";
 import { useLocation } from "react-router-dom";
+import LoadingBar from "react-top-loading-bar";
 
 export default function HomeScreen() {
   const [bannerMedia, setBannerMedia] = useState([]);
-  const [similarMedia, setSimilarMedia] = useState([]);
-  const [recommendedMedia, setRecommendedMedia] = useState([]);
-  const [trendingMovies, setTrendingMovies] = useState([]);
-  const [trendingTV, setTrendingTV] = useState([]);
-  const [topRatedMovies, setTopRatedMovies] = useState([]);
-  const [topRatedTV, setTopRatedTV] = useState([]);
+  const [loadingProgress, setLoadingProgress] = useState(10);
 
   const user = useSelector(selectUser);
   const myList = useSelector(selectMyList);
   const location = useLocation();
 
   useEffect(() => {
-    if (!user.displayName) {
-      setTimeout(() => {
-        window.location.reload();
-      }, 4000);
-      return user;
-    }
-  }, [user]);
-
-  useEffect(() => {
     async function fetchData() {
       const request = await axios.get(fetchTrending("all"));
-      let bannerMedia;
+      let media;
       for (let i = 0; i < request.data.results.length; i++) {
-        bannerMedia =
+        media =
           request.data.results[
             Math.floor(Math.random() * request.data.results.length)
           ];
-        if (bannerMedia.poster_path) {
+        if (media.poster_path) {
           break;
         }
       }
-      if (bannerMedia.media_type === "movie") {
-        bannerMedia.bannerTitle = "Featured Movie";
+      if (media.media_type === "movie") {
+        media.bannerTitle = "Featured Movie";
       } else {
-        bannerMedia.bannerTitle = "Featured Series";
+        media.bannerTitle = "Featured Series";
       }
-      setBannerMedia(bannerMedia);
+      setBannerMedia(media);
       return request;
     }
 
@@ -69,106 +55,75 @@ export default function HomeScreen() {
     return () => {
       setBannerMedia([]);
     };
-  }, [location]);
-
-  useEffect(() => {
-    async function fetchSimilarMedia(fetchURL) {
-      const request = await axios.get(fetchURL);
-      setSimilarMedia(request.data.results);
-    }
-    async function fetchRecommendedMedia(fetchURL) {
-      const request = await axios.get(fetchURL);
-      setRecommendedMedia(request.data.results);
-    }
-    async function fetchTrendingMovies(fetchURL) {
-      const request = await axios.get(fetchURL);
-      setTrendingMovies(request.data.results);
-    }
-    async function fetchTrendingTV(fetchURL) {
-      const request = await axios.get(fetchURL);
-      setTrendingTV(request.data.results);
-    }
-    async function fetchTopRatedMovies(fetchURL) {
-      const request = await axios.get(fetchURL);
-      setTopRatedMovies(request.data.results);
-    }
-    async function fetchTopRatedTV(fetchURL) {
-      const request = await axios.get(fetchURL);
-      setTopRatedTV(request.data.results);
-    }
-
-    if (bannerMedia.id) {
-        fetchSimilarMedia(fetchSimilar(bannerMedia.media_type, bannerMedia.id));
-        fetchRecommendedMedia(fetchRecommended(bannerMedia.media_type, bannerMedia.id));
-        fetchTrendingMovies(fetchTrending("movie"));
-        fetchTrendingTV(fetchTrending("tv"));
-        fetchTopRatedMovies(fetchPopular("movie"));
-        fetchTopRatedTV(fetchPopular("tv"));
-    }
-    return () => {
-      setSimilarMedia([]);
-      setRecommendedMedia([]);
-    };
-  }, [bannerMedia]);
+  }, [location?.state?.bannerMedia]);
 
   return (
     <div className="homeScreen">
       {!user.displayName ? (
         <Loading />
       ) : (
-        <>
-          <Navbar />
-          {bannerMedia.id && (
+        bannerMedia.id && (
+          <>
+            <LoadingBar
+              color="#3cb19f"
+              progress={loadingProgress}
+              onLoaderFinished={() => setLoadingProgress(0)}
+            />
+            <Navbar />
             <Banner
               title={bannerMedia.bannerTitle}
               fetchURL={fetchMedia(bannerMedia.media_type, bannerMedia.id)}
+              setLoadingProgress={setLoadingProgress}
             />
-          )}
-          <Row
-            title={
-              bannerMedia.media_type === "movie"
-                ? "Similar Movies"
-                : "Similar Series"
-            }
-            mediaDetails={similarMedia}
-            mediaType={bannerMedia.media_type}
-          />
-          <Row
-            title={
-              bannerMedia.media_type === "movie"
-                ? "Recommended Movies"
-                : "Recommended Series"
-            }
-            mediaDetails={recommendedMedia}
-            mediaType={bannerMedia.media_type}
-          />
-          <Row
-            title={"Trending Movies"}
-            mediaDetails={trendingMovies}
-            mediaType={"movie"}
-          />
-          <Row
-            title={"Trending Series"}
-            mediaDetails={trendingTV}
-            mediaType={"tv"}
-          />
-          <Row
-            title={"Top Rated Movies"}
-            mediaDetails={topRatedMovies}
-            mediaType={"movie"}
-          />
-          <Row
-            title={"Top Rated Series"}
-            mediaDetails={topRatedTV}
-            mediaType={"tv"}
-          />
-          <Row
-            title={"My List"}
-            mediaDetails={myList}
-            mediaType={bannerMedia.media_type}
-          />
-          <Footer />
-        </>
+            <Row
+              title={
+                bannerMedia.media_type === "movie"
+                  ? "Similar Movies"
+                  : "Similar Series"
+              }
+              fetchURL={fetchSimilar(bannerMedia.media_type, bannerMedia.id)}
+              mediaType={bannerMedia.media_type}
+            />
+            <Row
+              title={
+                bannerMedia.media_type === "movie"
+                  ? "Recommended Movies"
+                  : "Recommended Series"
+              }
+              fetchURL={fetchRecommended(
+                bannerMedia.media_type,
+                bannerMedia.id
+              )}
+              mediaType={bannerMedia.media_type}
+            />
+            <Row
+              title={"Trending Movies"}
+              fetchURL={fetchTrending("movie")}
+              mediaType={"movie"}
+            />
+            <Row
+              title={"Trending Series"}
+              fetchURL={fetchTrending("tv")}
+              mediaType={"tv"}
+            />
+            <Row
+              title={"Popular Movies"}
+              fetchURL={fetchPopular("tv")}
+              mediaType={"movie"}
+            />
+            <Row
+              title={"Popular Series"}
+              fetchURL={fetchPopular("tv")}
+              mediaType={"tv"}
+            />
+            <Row
+              title={"My List"}
+              mediaList={myList}
+              mediaType={bannerMedia.media_type}
+            />
+            <Footer />
+          </>
+        )
       )}
     </div>
   );

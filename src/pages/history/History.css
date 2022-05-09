@@ -1,0 +1,96 @@
+.history {
+  min-height: 100vh;
+  padding-top: 5rem;
+  padding-bottom: 280px;
+}
+
+.history-heading {
+  margin: 0 3rem 2rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.history-button {
+  font-size: 0.75rem !important;
+}
+
+.history-list {
+  margin-bottom: 3rem;
+}
+.history-list-item {
+    text-align: center;
+    margin: 0.25rem 3rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
+}
+.history-list-item:hover {
+    background: rgba(30,32,34,0.2);
+}
+
+.history-list-item:nth-child(odd) {
+  background: rgb(30, 32, 34);
+}
+.history-list-item:nth-child(odd):hover {
+  background: rgba(30,32,34,0.8);
+}
+
+.history-list-itemInfo {
+  width: 15rem;
+}
+
+.history-list-item img {
+  height: 50px;
+  width: 75px;
+  border-radius: 5px;
+}
+.history-list-item img:hover,.history-list-itemInfo:hover,.history-list-date-time:hover,.history-list-itemDelete:hover{
+  cursor: pointer;
+}
+
+.history h4 {
+  font-size: 1.8rem;
+}
+
+.history-list-likes {
+  margin-left: 1rem;
+}
+
+.history-message{
+  text-align: center;
+}
+.history-message h2{
+font-size: 1.5rem;
+}
+
+
+@media (max-width: 450px) {
+  .history {
+    padding-bottom: 420px;
+  }
+  .history-heading {
+    margin: 0 1rem 3rem 1rem;
+  }
+  .history-list-item {
+    margin: 0.5rem 0;
+  }
+  .history-list-itemInfo {
+    width: 10rem;
+  }
+  .history h4 {
+    font-size: 1.2rem;
+  }
+  .history h5 {
+    font-size: 0.8rem;
+  }
+  .history small {
+    font-size: 0.7rem;
+  }
+  .history-button {
+    font-size: 0.65rem !important;
+    padding: 3px 10px !important;
+  }
+}

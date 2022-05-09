@@ -1,43 +1,39 @@
-const API_key = "6dfe6f5b337d2ab5c1759e43e9de375e";
-
 const fetchTrending = (mediaType) => {
-  return `/trending/${mediaType}/week?api_key=${API_key}&language=en-US`;
+  return `/trending/${mediaType}/week?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`;
 };
 const fetchMedia = (mediaType,id) => {
-  return `/${mediaType}/${id}?api_key=${API_key}&append_to_response=videos,release_dates`;
+  let append_to_response = mediaType === "movie" ? "videos,credits,release_dates" : "videos,content_ratings";
+  return `/${mediaType}/${id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&append_to_response=${append_to_response}&language=en-US`;
 };
-const fetchSearchQuery = (query) => {
+const fetchSearchQuery = (query, pgNo=1) => {
   let queryString = encodeURIComponent(query);
-  return `/search/multi?api_key=${API_key}&language=en-US&query=${queryString}&page=1&include_adult=false`;
+  return `/search/multi?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&query=${queryString}&page=${pgNo}&include_adult=false`;
 };
 const fetchRecommended = (mediaType,id) => {
-  return `/${mediaType}/${id}/recommendations?api_key=${API_key}&language=en-US&page=1`;
+  return `/${mediaType}/${id}/recommendations?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&page=1`;
 };
 const fetchSimilar = (mediaType,id) => {
-  return `/${mediaType}/${id}/similar?api_key=${API_key}&language=en-US&page=1`;
+  return `/${mediaType}/${id}/similar?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&page=1`;
 };
 const fetchPopular = (mediaType) => {
-  return `/${mediaType}/popular?api_key=${API_key}&language=en-US`;
+  return `/${mediaType}/popular?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`;
 };
 const fetchTopRated = (mediaType) => {
-  return `/${mediaType}/top_rated?api_key=${API_key}&language=en-US`;
+  return `/${mediaType}/top_rated?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`;
 };
 const fetchWithGenre = (mediaType,id) => {
-  return `/discover/${mediaType}?api_key=${API_key}&with_genres=${id}`;
+  return `/discover/${mediaType}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&with_genres=${id}`;
 };
 
-const fetchAvatarImg = (email) => {
-  return `https://avatars.dicebear.com/api/adventurer-neutral/${email}.svg`;
-};
 
-const fetchNowPlayingMovies = `/movie/now_playing?api_key=${API_key}&language=en-US`;
-const fetchUpcomingMovies = `/movie/upcoming?api_key=${API_key}&language=en-US`;
-const fetchAiringTodayTV = `/tv/airing_today?api_key=${API_key}&language=en-US`;
-const fetchOnAirTV = `/tv/on_the_air?api_key=${API_key}&language=en-US`;
+
+const fetchNowPlayingMovies = `/movie/now_playing?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`;
+const fetchUpcomingMovies = `/movie/upcoming?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`;
+const fetchAiringTodayTV = `/tv/airing_today?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`;
+const fetchOnAirTV = `/tv/on_the_air?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`;
 
 
 export {
-  fetchAvatarImg,
   fetchTrending,
   fetchMedia,
   fetchSearchQuery,

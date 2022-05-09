@@ -19,15 +19,11 @@ import {
 } from "../../api/requests";
 import axios from "../../api/axios";
 import { useLocation } from "react-router-dom";
+import LoadingBar from "react-top-loading-bar";
 
 export default function Movies() {
   const [bannerMedia, setBannerMedia] = useState([]);
-  const [similarMedia, setSimilarMedia] = useState([]);
-  const [recommendedMedia, setRecommendedMedia] = useState([]);
-  const [popularMedia, setPopularMedia] = useState([]);
-  const [topRatedMedia, setTopRatedMedia] = useState([]);
-  const [onAirTV, setOnAirTV] = useState([]);
-  const [airingTodayTV, setAiringTodayTV] = useState([]);
+  const [loadingProgress, setLoadingProgress] = useState(10);
 
   const user = useSelector(selectUser);
   const location = useLocation();
@@ -45,7 +41,7 @@ export default function Movies() {
           break;
         }
       }
-        bannerMedia.bannerTitle = "Featured Series";
+      bannerMedia.bannerTitle = "Featured Series";
       setBannerMedia(bannerMedia);
       return request;
     }
@@ -59,92 +55,62 @@ export default function Movies() {
     };
   }, [location]);
 
-  useEffect(() => {
-    async function fetchSimilarMedia(fetchURL) {
-      const request = await axios.get(fetchURL);
-      setSimilarMedia(request.data.results);
-    }
-    async function fetchRecommendedMedia(fetchURL) {
-      const request = await axios.get(fetchURL);
-      setRecommendedMedia(request.data.results);
-    }
-    async function fetchPopularMedia(fetchURL) {
-      const request = await axios.get(fetchURL);
-      setPopularMedia(request.data.results);
-    }
-    async function fetchTopRatedMedia(fetchURL) {
-      const request = await axios.get(fetchURL);
-      setTopRatedMedia(request.data.results);
-    }
-    async function fetchOnAirMedia(fetchURL) {
-      const request = await axios.get(fetchURL);
-      setOnAirTV(request.data.results);
-    }
-    async function fetchAiringTodayMedia(fetchURL) {
-      const request = await axios.get(fetchURL);
-      setAiringTodayTV(request.data.results);
-    }
-
-    if (bannerMedia.id) {
-        fetchSimilarMedia(fetchSimilar(bannerMedia.media_type, bannerMedia.id));
-        fetchRecommendedMedia(fetchRecommended(bannerMedia.media_type, bannerMedia.id));
-        fetchPopularMedia(fetchPopular(bannerMedia.media_type));
-        fetchTopRatedMedia(fetchTopRated(bannerMedia.media_type));
-        fetchOnAirMedia(fetchOnAirTV);
-        fetchAiringTodayMedia(fetchAiringTodayTV);
-
-    }
-    return () => {
-      setSimilarMedia([]);
-      setRecommendedMedia([]);
-    };
-  }, [bannerMedia]);
-
   return (
-    <div className="movies">
+    <div className="series">
       {!user.displayName ? (
         <Loading />
       ) : (
-        <>
-          <Navbar />
-          {bannerMedia.id && (
-            <Banner
-              title={bannerMedia.bannerTitle}
-              fetchURL={fetchMedia(bannerMedia.media_type, bannerMedia.id)}
+        bannerMedia.id && (
+          <>
+            <LoadingBar
+              color="#3cb19f"
+              progress={loadingProgress}
+              onLoaderFinished={() => setLoadingProgress(0)}
             />
-          )}
-          <Row
-            title={"Similar Series"}
-            mediaDetails={similarMedia}
-            mediaType={bannerMedia.media_type}
-          />
-          <Row
-            title={"Recommended Series"}
-            mediaDetails={recommendedMedia}
-            mediaType={bannerMedia.media_type}
-          />
-          <Row
-            title={"Popular Series"}
-            mediaDetails={popularMedia}
-            mediaType={bannerMedia.media_type}
-          />
-          <Row
-            title={"Top Rated Series"}
-            mediaDetails={topRatedMedia}
-            mediaType={bannerMedia.media_type}
-          />
-          <Row
-            title={"Currently On Air"}
-            mediaDetails={onAirTV}
-            mediaType={bannerMedia.media_type}
-          />
-          <Row
-            title={"Airing Today"}
-            mediaDetails={airingTodayTV}
-            mediaType={bannerMedia.media_type}
-          />
-          <Footer />
-        </>
+            <Navbar />
+            {bannerMedia.id && (
+              <Banner
+                title={bannerMedia.bannerTitle}
+                fetchURL={fetchMedia(bannerMedia.media_type, bannerMedia.id)}
+                setLoadingProgress={setLoadingProgress}
+              />
+            )}
+            <Row
+              title={"Similar Series"}
+              fetchURL={fetchSimilar(bannerMedia.media_type, bannerMedia.id)}
+              mediaType={bannerMedia.media_type}
+            />
+            <Row
+              title={"Recommended Series"}
+              fetchURL={fetchRecommended(
+                bannerMedia.media_type,
+                bannerMedia.id
+              )}
+              mediaType={bannerMedia.media_type}
+            />
+            <Row
+              title={"Popular Series"}
+              fetchURL={fetchPopular(bannerMedia.media_type)}
+              mediaType={bannerMedia.media_type}
+            />
+            <Row
+              title={"Top Rated Series"}
+              fetchURL={fetchTopRated(bannerMedia.media_type)}
+              mediaType={bannerMedia.media_type}
+            />
+            <Row
+              title={"Currently On Air"}
+              fetchURL={fetchOnAirTV}
+              mediaType={bannerMedia.media_type}
+            />
+            <Row
+              title={"Airing Today"}
+              fetchURL={fetchAiringTodayTV}
+              mediaType={bannerMedia.media_type}
+            />
+            <Footer />
+          </>
+        )
       )}
     </div>
   );

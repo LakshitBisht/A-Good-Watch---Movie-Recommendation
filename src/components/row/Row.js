@@ -6,25 +6,45 @@ import Rating from "@material-ui/lab/Rating";
 import TextTruncate from "react-text-truncate";
 import numeral from "numeral";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "../../api/axios";
 
 export default function Row({
   title,
-  mediaDetails,
+  fetchURL,
+  mediaList,
   mediaType,
 }) {
 
+  const [mediaDetails, setMediaDetails] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const [rowItemsPosition, setRowItemsPosition ] = useState("first");
   const [isScrollable, setIsScrollable] = useState(false);
 
   const mediaRowRef = useRef();
+  
+    useEffect(() => {
+      async function fetchMedia(fetchURL) {
+        const request = await axios.get(fetchURL);
+        setMediaDetails(request.data.results);
+      }
+  
+      mediaList? setMediaDetails(mediaList) : fetchMedia(fetchURL);
+
+      return () => {
+        setMediaDetails([]);
+      }
+    }, [fetchURL, mediaList]);
 
   useEffect(() => {
     let width = window.innerWidth;
     let maxMedia = width/300;
     if(mediaDetails.length > maxMedia){
       setIsScrollable(true);
+    }
+
+    return () => {
+      setIsScrollable(false);
     }
   }, [mediaDetails]);
 

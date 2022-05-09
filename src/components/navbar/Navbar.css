@@ -44,9 +44,9 @@
     transition: all 0.4s;
 }
 
-.nav-left li a:hover:not(.active){
+.nav-left li a:hover:not(.active):not(.logo-link){
     font-weight: 500;
-    padding: 0rem 1rem;
+    padding: 0rem 5px;
 }
 
 .nav-left li a.active{
@@ -227,6 +227,9 @@
           
           .navbar .nav-left .hamburger-lines.active .line3 {
             transform: rotate(-45deg);
+          }
+          .navbar .nav-left .hamburger-lines:hover{
+              cursor: pointer;
           }
 
           .hamburger-overlay {

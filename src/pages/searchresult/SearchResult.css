@@ -3,11 +3,10 @@
     padding-bottom: 310px;
 }
 
-.noResultsFound{
-    margin-top: 80px;
+.search-message{
+    text-align: center;
 }
-.noResultsFound h2{
-    margin-left: 2rem;
+.search-message h2{
 	font-size: 1.5rem;
 }
 

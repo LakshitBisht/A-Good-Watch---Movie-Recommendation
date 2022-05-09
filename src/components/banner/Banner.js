@@ -13,25 +13,46 @@ import ModalVideo from "react-modal-video";
 import Grow from "@material-ui/core/Grow";
 import { toast } from "react-toastify";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import {
-  addToList,
-  removeFromList,
+  selectUser,
+  addMyListDB,
+  addHistoryDB,
+  removeMyListDB,
   selectMyList,
-} from "../../features/mylistSlice";
+} from "../../features/userSlice";
 
-export default function Banner({ title, fetchURL }) {
+export default function Banner({ title, fetchURL, setLoadingProgress }) {
   const [bannerMedia, setBannerMedia] = useState([]);
   const [mediaCertification, setMediaCertification] = useState("NA");
   const [playTrailer, setPlayTrailer] = useState(false);
   const [videoId, setVideoId] = useState("");
 
+  const user = useSelector(selectUser);
   const myList = useSelector(selectMyList);
   const dispatch = useDispatch();
+
+  const getDateTime = () => {
+    let currentdate = new Date();
+    let date =
+      currentdate.getDate() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear();
+    let time =
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    return [date, time];
+  };
 
   useEffect(() => {
     async function fetchData() {
       const response = await axios.get(fetchURL);
+      setLoadingProgress(40);
       response.data.bannerTitle = title;
 
       for (let i = 0; i < response.data.videos.results.length; i++) {
@@ -40,10 +61,9 @@ export default function Banner({ title, fetchURL }) {
           break;
         }
       }
-
+      setLoadingProgress(50);
       if (title === "Featured Movie" || title === "Selected Movie") {
         response.data.media_type = "movie";
-        setBannerMedia(response.data);
         let releaseDates = response.data.release_dates.results;
         for (let i = 0; i < releaseDates.length; i++) {
           if (
@@ -59,7 +79,6 @@ export default function Banner({ title, fetchURL }) {
         }
       } else {
         response.data.media_type = "tv";
-        setBannerMedia(response.data);
         let contentRating = response.data.content_ratings.results;
         for (let i = 0; i < contentRating.length; i++) {
           if (contentRating[i].iso_3166_1 === "US") {
@@ -69,11 +88,32 @@ export default function Banner({ title, fetchURL }) {
           }
         }
       }
+      setLoadingProgress(80);
+      setBannerMedia(response.data);
+      setTimeout(() => {
+        let historyMedia = {
+          id: response.data.id,
+          media_type: response.data.media_type ? response.data.media_type : null,
+          poster_path: response.data.poster_path ? response.data.poster_path : null,
+          backdrop_path: response.data.backdrop_path ? response.data.backdrop_path : null,
+          title: response.data.title ? response.data.title : null,
+          name: response.data.name ? response.data.name : null,
+          original_title: response.data.original_title ? response.data.original_title : null,
+          original_name: response.data.original_name ? response.data.original_name : null,
+          release_date: response.data.release_date ? response.data.release_date : null,
+          first_air_date: response.data.first_air_date ? response.data.first_air_date : null,
+          vote_average: response.data.vote_average ? response.data.vote_average : null,
+          history_date_time: getDateTime()
+        };
+        dispatch(addHistoryDB({ media: historyMedia, email: user.email }));
+      }, 3000);
       return response;
     }
+    setLoadingProgress(20);
     fetchURL && fetchData();
     setTimeout(() => {
       window.scrollTo(0, 0);
+      setLoadingProgress(100);
     }, 10);
 
     return () => {
@@ -81,7 +121,7 @@ export default function Banner({ title, fetchURL }) {
       setMediaCertification("NA");
       setVideoId("");
     };
-  }, [fetchURL, setBannerMedia, setMediaCertification, title]);
+  }, [dispatch, fetchURL, setLoadingProgress, title, user.email]);
 
   const getReleaseYear = (date) => {
     let year = new Date(date);
@@ -90,15 +130,13 @@ export default function Banner({ title, fetchURL }) {
 
   const addToWatchList = async (e) => {
     e.preventDefault();
-    dispatch(addToList(bannerMedia));
+    dispatch(addMyListDB({ media: bannerMedia, email: user.email }));
     toast.success("Added to My List!");
   };
 
   const removeFromWatchList = async (e) => {
     e.preventDefault();
-    dispatch(
-      removeFromList({ id: bannerMedia.id, media_type: bannerMedia.media_type })
-    );
+    dispatch(removeMyListDB({ media: bannerMedia, email: user.email }));
     toast.success("Removed from My List!");
   };
 
@@ -186,7 +224,7 @@ export default function Banner({ title, fetchURL }) {
               startIcon={<PlayArrowRoundedIcon />}
               disabled={videoId === ""}
             >
-              Play Trailer
+              {videoId === "" ? "Unavailable" : "Play Trailer"}
             </Button>
             {myList.some(
               (media) =>

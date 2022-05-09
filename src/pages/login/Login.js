@@ -94,6 +94,7 @@ function Login() {
             ref={emailRef}
             defaultValue={email}
             placeholder="Enter Your Email"
+            autoComplete="on"
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -104,6 +105,7 @@ function Login() {
             required
             ref={passwordRef}
             placeholder="••••••••"
+            autoComplete="on"
           />
         </div>
         <p className="forgotPassword">

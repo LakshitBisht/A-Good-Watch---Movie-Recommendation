@@ -19,7 +19,6 @@ function Navbar({
   const location = useLocation();
   const user = useSelector(selectUser);
   const [navClass, setNavClass] = useState("");
-  const [avatarImg, setAvatarImg] = useState("");
   const [searchActive, setSearchActive] = useState(
     location?.state?.searchActive || !searchNavigate
   );
@@ -27,15 +26,6 @@ function Navbar({
   const [hamburgerActive, setHamburgerActive] = useState(false);
 
   const searchQueryRef = useRef();
-
-  useEffect(() => {
-    if (user) {
-      setAvatarImg(user.photoURL);
-    }
-    return () => {
-      setAvatarImg("");
-    };
-  }, [user]);
 
   useEffect(() => {
     if (searchNavigate && searchQuery !== "") {
@@ -66,31 +56,14 @@ function Navbar({
     };
   }, []);
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-    const toastId = toast.loading("Logging Out...");
-    setTimeout(() => {
-      toast
-        .promise(
-          signOut(auth).then(() => {
-            toast.dismiss(toastId);
-            navigate("/login");
-          }),
-          {
-            pending: "Logging Out...",
-            success: "We'll be waiting for your return!",
-            error: "An error occurred",
-          }
-        )
-        .catch((error) => {
-          console.log(error.message);
-        });
-    }, 1500);
-  };
-
   const handleProfile = (e) => {
     e.preventDefault();
     navigate("/profile");
+  };
+
+  const handleHistory = (e) => {
+    e.preventDefault();
+    navigate("/history");
   };
 
   const handleSearchQueryChange = (e) => {
@@ -104,20 +77,32 @@ function Navbar({
 
   return (
     <div className={`navbar ${navClass}`}>
-      <div className={`hamburger-overlay ${hamburgerActive ? "overlay-slide-left" : "overlay-slide-right"}`}>
+      <div
+        className={`hamburger-overlay ${
+          hamburgerActive ? "overlay-slide-left" : "overlay-slide-right"
+        }`}
+      >
         <ul>
-        <li>
-          <NavLink to="/browse" data-after={"Home"}>Home</NavLink>
-        </li>
-        <li>
-          <NavLink to="/movies" data-after={"Movies"}>Movies</NavLink>
-        </li>
-        <li>
-          <NavLink to="/series" data-after={"Series"}>Series</NavLink>
-        </li>
-        <li>
-          <NavLink to="/mylist" data-after={"My List"}>My List</NavLink>
-        </li>
+          <li>
+            <NavLink to="/browse" data-after={"Home"}>
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/movies" data-after={"Movies"}>
+              Movies
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/series" data-after={"Series"}>
+              Series
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/mylist" data-after={"My List"}>
+              My List
+            </NavLink>
+          </li>
         </ul>
       </div>
 
@@ -134,7 +119,9 @@ function Navbar({
             <span className="line line3"></span>
           </div>
           <li>
-            <img className="logo" src={LogoImg} alt="logo.png" />
+            <NavLink to="/browse" className="logo-link">
+              <img className="logo" src={LogoImg} alt="logo.png" />
+            </NavLink>
           </li>
           <li>
             <NavLink to="/browse">Home</NavLink>
@@ -169,13 +156,21 @@ function Navbar({
               placeholder="Search..."
             />
           </li>
-          {avatarImg !== "" && (
+          {user?.photoURL && (
             <div className="nav-profile">
-              <img className="avatar" src={avatarImg} alt="avatar.png" />
+              <img className="avatar" src={user.photoURL} alt="avatar.png" />
               <ArrowDropDown className="nav-icon" />
               <ul className="options">
                 <li onClick={handleProfile}>Profile</li>
-                <li onClick={handleLogout}>Logout</li>
+                <li onClick={handleHistory}>History</li>
+                <li
+                  onClick={() => {
+                    signOut(auth);
+                    toast.success("We'll be waiting for your return!");
+                  }}
+                >
+                  Logout
+                </li>
               </ul>
             </div>
           )}
