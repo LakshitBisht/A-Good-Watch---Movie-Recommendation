@@ -53,16 +53,19 @@ function Signup() {
       return setError("Passwords Do Not Match!");
     }
     setLoading(true);
+    let email = emailRef.current.value;
+    let password = passwordRef.current.value;
+    let username = usernameRef.current.value;
     toast
       .promise(
         createUserWithEmailAndPassword(
           auth,
-          emailRef.current.value,
-          passwordRef.current.value
+          email,
+          password
         ).then(async () => {
           await updateProfile(auth.currentUser, {
-            displayName: usernameRef.current.value,
-            photoURL: fetchAvatarImg(emailRef.current.value),
+            displayName: username,
+            photoURL: fetchAvatarImg(email),
           });
           setLoading(false);
           setTimeout(() => {

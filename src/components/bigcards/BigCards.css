@@ -78,7 +78,7 @@
 .big-list-itemInfo {
 	position: absolute;
 	left: 0;
-	bottom: -10rem;
+	bottom: -20rem;
 	padding: 1rem;
 	z-index: 9;
 	width: 100%;
@@ -129,10 +129,4 @@
 	.big-cards {
 		padding: 5rem 1.5rem 1.5rem 1.5rem;
 	}
-
-	/* .big-list > .big-list-item {
-		width: calc((100% / 2) - 1rem);
-		margin: 0.5rem;
-		padding-bottom: calc(((100% / 2) - 1rem) * 1.5);
-	} */
 }
