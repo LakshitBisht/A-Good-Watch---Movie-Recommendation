@@ -41,7 +41,7 @@ function Login() {
       .then(() => {
         setLoading(false);
         toast.success("Welcome Back!");
-        navigate("/browse", { replace: true });
+        navigate("/browse/home", { replace: true });
       })
       .catch(() => {
         setError("Login with Google Failed!");
@@ -61,7 +61,7 @@ function Login() {
           passwordRef.current.value
         ).then(() => {
           setLoading(false);
-          navigate("/browse", { replace: true });
+          navigate("/browse/home", { replace: true });
         }),
         {
           pending: "Logging In...",

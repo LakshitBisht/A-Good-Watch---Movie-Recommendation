@@ -39,11 +39,6 @@ export default function HomeScreen() {
           break;
         }
       }
-      if (media.media_type === "movie") {
-        media.bannerTitle = "Featured Movie";
-      } else {
-        media.bannerTitle = "Featured Series";
-      }
       setBannerMedia(media);
       return request;
     }
@@ -71,7 +66,8 @@ export default function HomeScreen() {
             />
             <Navbar />
             <Banner
-              title={bannerMedia.bannerTitle}
+              title={location?.state?.bannerMedia? "Selected" : "Featured"}
+              mediaType={bannerMedia.media_type}
               fetchURL={fetchMedia(bannerMedia.media_type, bannerMedia.id)}
               setLoadingProgress={setLoadingProgress}
             />
@@ -108,7 +104,7 @@ export default function HomeScreen() {
             />
             <Row
               title={"Popular Movies"}
-              fetchURL={fetchPopular("tv")}
+              fetchURL={fetchPopular("movie")}
               mediaType={"movie"}
             />
             <Row

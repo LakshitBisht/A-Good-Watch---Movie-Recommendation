@@ -259,7 +259,7 @@ function Profile() {
             </button>
           )}
           <p>
-            <Link to="/browse" replace>
+            <Link to="/browse/home" replace>
               Back to HomeScreen.
             </Link>
           </p>

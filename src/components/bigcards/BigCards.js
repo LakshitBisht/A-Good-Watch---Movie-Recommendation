@@ -11,13 +11,7 @@ function BigCards({title, media}) {
     const navigate = useNavigate();
 	
     const handleClick = (media) => {
-		if(!media.bannerTitle){
-        if(media.media_type === 'movie') {
-            media.bannerTitle = "Selected Movie";
-                } else {
-            media.bannerTitle = "Selected Series";
-                }}
-        navigate('/browse', {state: {bannerMedia : media}});
+        navigate('/browse/home', {state: {bannerMedia : media}});
       }
     
       const getReleaseYear = (date) => {

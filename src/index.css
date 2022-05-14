@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;900&family=Mulish:wght@700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;900&family=Mulish:wght@700;800;900&display=swap");
+
+@font-face {
+  font-family: Walk;
+  src: url("./assests/fonts/Walk.ttf");
+}
 
 html {
   min-height: 100%;
@@ -40,7 +45,9 @@ button:focus {
   color: rgba(255, 255, 255, 0.5);
 }
 
-*, :after, :before {
+*,
+:after,
+:before {
   box-sizing: border-box;
   margin: 0;
 }

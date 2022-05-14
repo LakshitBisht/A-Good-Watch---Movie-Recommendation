@@ -41,7 +41,6 @@ export default function Movies() {
           break;
         }
       }
-      bannerMedia.bannerTitle = "Featured Movie";
       setBannerMedia(bannerMedia);
       return request;
     }
@@ -70,7 +69,8 @@ export default function Movies() {
             <Navbar />
             {bannerMedia.id && (
               <Banner
-                title={bannerMedia.bannerTitle}
+                title={location?.state?.bannerMedia? "Selected" : "Featured"} 
+                mediaType={"movie"}
                 fetchURL={fetchMedia(bannerMedia.media_type, bannerMedia.id)}
                 setLoadingProgress={setLoadingProgress}
               />

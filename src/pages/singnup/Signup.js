@@ -42,7 +42,7 @@ function Signup() {
         setLoading(false);
         toast.success("Welcome!");
         setTimeout(() => {
-          navigate("/browse");
+          navigate("/browse/home");
         }, 2000);
       })
       .catch(() => {
@@ -82,7 +82,7 @@ function Signup() {
             photoURL: auth.currentUser.photoURL
           }));
           setLoading(false);
-            navigate("/browse", { replace: true });
+            navigate("/browse/home", { replace: true });
         }),
         {
           pending: "Setting Up Account...",

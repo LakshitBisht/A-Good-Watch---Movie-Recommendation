@@ -9,7 +9,11 @@ import Movies from "./pages/movies/Movies";
 import Series from "./pages/series/Series";
 import MyList from "./pages/mylist/MyList";
 import History from "./pages/history/History";
+import About from "./pages/about/About";
 import SearchResult from "./pages/searchresult/SearchResult";
+import Contact from "./pages/contact/Contact";
+import ScrollToTop from "./components/scrolltotop/ScrollToTop";
+import BackToTop from "./components/backtotop/BackToTop";
 import {
   BrowserRouter as Router,
   Routes,
@@ -30,6 +34,7 @@ function App() {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -51,6 +56,23 @@ function App() {
 
     return unsubscribe;
   }, [dispatch]);
+  
+
+  const checkScroll = () => {
+    if (window.scrollY > 2000) {
+      setShowBackToTop(true);
+  }
+  else{
+    setShowBackToTop(false);
+  }
+}
+
+  useEffect(() => {
+    window.addEventListener("scroll", checkScroll);
+    return () => {
+      window.removeEventListener("scroll", checkScroll);
+    };
+  }, []);
 
   return (
     <AnimatePresence>
@@ -59,6 +81,8 @@ function App() {
           <Loading />
         ) : (
           <Router>
+            <ScrollToTop />
+            <BackToTop disable={!showBackToTop}/>
             <Routes>
               {!currUser ? (
                 <>
@@ -72,20 +96,23 @@ function App() {
                 </>
               ) : (
                 <>
-                  <Route exact path="/browse" element={<HomeScreen />} />
-                  <Route exact path="/movies" element={<Movies />} />
-                  <Route exact path="/series" element={<Series />} />
+                  <Route exact path="/browse/home" element={<HomeScreen />} />
+                  <Route exact path="/browse/movies" element={<Movies />} />
+                  <Route exact path="/browse/series" element={<Series />} />
                   <Route exact path="/profile" element={<Profile />} />
                   <Route exact path="/mylist" element={<MyList />} />
                   <Route exact path="/history" element={<History />} />
+                  <Route exact path="/history" element={<History />} />
                   <Route path="/search" element={<SearchResult />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/about/contact" element={<Contact />} />
                 </>
               )}
               ;
               <Route
                 path="*"
                 element={
-                  <Navigate to={currUser ? "/browse" : "/login"} replace />
+                  <Navigate to={currUser ? "/browse/home" : "/login"} replace />
                 }
               />
             </Routes>

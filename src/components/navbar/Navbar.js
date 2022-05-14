@@ -32,7 +32,7 @@ function Navbar({
       navigate(`/search?q=${searchQuery}`);
     } else {
       if (!searchNavigate && searchQuery === "") {
-        navigate("/browse", { state: { searchActive: true } });
+        navigate("/browse/home", { state: { searchActive: true } });
       }
     }
   }, [navigate, searchNavigate, searchQuery]);
@@ -84,17 +84,17 @@ function Navbar({
       >
         <ul>
           <li>
-            <NavLink to="/browse" data-after={"Home"}>
+            <NavLink to="/browse/home" data-after={"Home"}>
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink to="/movies" data-after={"Movies"}>
+            <NavLink to="/browse/movies" data-after={"Movies"}>
               Movies
             </NavLink>
           </li>
           <li>
-            <NavLink to="/series" data-after={"Series"}>
+            <NavLink to="/browse/series" data-after={"Series"}>
               Series
             </NavLink>
           </li>
@@ -119,18 +119,18 @@ function Navbar({
             <span className="line line3"></span>
           </div>
           <li>
-            <NavLink to="/browse" className="logo-link">
+            <NavLink to="/browse/home" className="logo-link">
               <img className="logo" src={LogoImg} alt="logo.png" />
             </NavLink>
           </li>
           <li>
-            <NavLink to="/browse">Home</NavLink>
+            <NavLink to="/browse/home">Home</NavLink>
           </li>
           <li>
-            <NavLink to="/movies">Movies</NavLink>
+            <NavLink to="/browse/movies">Movies</NavLink>
           </li>
           <li>
-            <NavLink to="/series">Series</NavLink>
+            <NavLink to="/browse/series">Series</NavLink>
           </li>
           <li>
             <NavLink to="/mylist">My List</NavLink>

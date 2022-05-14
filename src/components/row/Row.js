@@ -52,12 +52,6 @@ export default function Row({
     if (!media.media_type) {
       media.media_type = mediaType;
     }
-    if(!media.bannerTitle){
-    if (media.media_type === "movie") {
-      media.bannerTitle = "Selected Movie";
-    } else {
-      media.bannerTitle = "Selected Series";
-    }}
     navigate(`${location.pathname}`, {state: {bannerMedia : media}});
   };
 

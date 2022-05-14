@@ -22,7 +22,10 @@ import {
   selectMyList,
 } from "../../features/userSlice";
 
-export default function Banner({ title, fetchURL, setLoadingProgress }) {
+export default function Banner({ title = "Selected", mediaType, fetchURL, setLoadingProgress }) {
+
+  title = title + (mediaType==="movie"?" Movie":" Series")
+
   const [bannerMedia, setBannerMedia] = useState([]);
   const [mediaCertification, setMediaCertification] = useState("NA");
   const [playTrailer, setPlayTrailer] = useState(false);
@@ -34,18 +37,8 @@ export default function Banner({ title, fetchURL, setLoadingProgress }) {
 
   const getDateTime = () => {
     let currentdate = new Date();
-    let date =
-      currentdate.getDate() +
-      "/" +
-      (currentdate.getMonth() + 1) +
-      "/" +
-      currentdate.getFullYear();
-    let time =
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      ":" +
-      currentdate.getSeconds();
+    let date = currentdate.toDateString();
+    let time = currentdate.toLocaleTimeString();
     return [date, time];
   };
 
@@ -53,7 +46,6 @@ export default function Banner({ title, fetchURL, setLoadingProgress }) {
     async function fetchData() {
       const response = await axios.get(fetchURL);
       setLoadingProgress(40);
-      response.data.bannerTitle = title;
 
       for (let i = 0; i < response.data.videos.results.length; i++) {
         if (response.data.videos.results[i].type === "Trailer") {
@@ -62,8 +54,8 @@ export default function Banner({ title, fetchURL, setLoadingProgress }) {
         }
       }
       setLoadingProgress(50);
-      if (title === "Featured Movie" || title === "Selected Movie") {
-        response.data.media_type = "movie";
+      response.data.media_type = mediaType;
+      if (mediaType === "movie") {
         let releaseDates = response.data.release_dates.results;
         for (let i = 0; i < releaseDates.length; i++) {
           if (
@@ -78,7 +70,6 @@ export default function Banner({ title, fetchURL, setLoadingProgress }) {
           }
         }
       } else {
-        response.data.media_type = "tv";
         let contentRating = response.data.content_ratings.results;
         for (let i = 0; i < contentRating.length; i++) {
           if (contentRating[i].iso_3166_1 === "US") {
@@ -88,7 +79,7 @@ export default function Banner({ title, fetchURL, setLoadingProgress }) {
           }
         }
       }
-      setLoadingProgress(80);
+      setLoadingProgress(60);
       setBannerMedia(response.data);
       setTimeout(() => {
         let historyMedia = {
@@ -106,6 +97,7 @@ export default function Banner({ title, fetchURL, setLoadingProgress }) {
           history_date_time: getDateTime()
         };
         dispatch(addHistoryDB({ media: historyMedia, email: user.email }));
+        setLoadingProgress(100)
       }, 3000);
       return response;
     }
@@ -113,7 +105,6 @@ export default function Banner({ title, fetchURL, setLoadingProgress }) {
     fetchURL && fetchData();
     setTimeout(() => {
       window.scrollTo(0, 0);
-      setLoadingProgress(100);
     }, 10);
 
     return () => {
@@ -121,7 +112,7 @@ export default function Banner({ title, fetchURL, setLoadingProgress }) {
       setMediaCertification("NA");
       setVideoId("");
     };
-  }, [dispatch, fetchURL, setLoadingProgress, title, user.email]);
+  }, [dispatch, fetchURL, mediaType, setLoadingProgress, user.email]);
 
   const getReleaseYear = (date) => {
     let year = new Date(date);

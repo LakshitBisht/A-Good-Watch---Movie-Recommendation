@@ -1,0 +1,41 @@
+.contact {
+  padding-bottom: 200px;
+}
+.emailForm {
+  padding: 5rem 2rem 8rem 2rem;
+  width: 100%;
+  min-height: 100vh;
+  background: #222831;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+}
+.emailForm::before {
+  position: absolute;
+  content: "";
+  background-image: url("../../assests/images/about_bg.jpg");
+  background-size: cover;
+  mix-blend-mode: overlay;
+  mask-image: radial-gradient(
+    ellipse farthest-side at 50% 50%,
+    #222831,
+    rgba(0, 0, 0, 0.1)
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse farthest-side at 50% 50%,
+    #222831,
+    rgba(0, 0, 0, 0.1)
+  );
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+@media (max-width: 550px) {
+  .emailForm {
+    padding: 5rem 1rem 8rem 1rem;
+  }
+}
